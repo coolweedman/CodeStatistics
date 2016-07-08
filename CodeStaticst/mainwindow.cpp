@@ -10,12 +10,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     CFileCodeStatistics *file = new CFileCodeStatistics( "a.txt" );
-    if ( NULL != file ) {
-        file->fcsFileScan();
-        file->fcsResultPrint();
-
-        delete file;
-    }
+    file->fcsFileScan();
+    file->fcsResultPrint();
 }
 
 MainWindow::~MainWindow()

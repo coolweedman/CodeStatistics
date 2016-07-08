@@ -4,6 +4,7 @@
 #include "dirscanstatistics.h"
 #include <QDebug>
 #include "codestatistics.h"
+#include "codestatisticswindow.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -27,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent) :
     }
 #endif
 
+#if 0
     CCodeStatistics *codeStat = new CCodeStatistics();
     codeStat->codeStatProc( "Statistics" );
 
@@ -38,6 +40,10 @@ MainWindow::MainWindow(QWidget *parent) :
     SCodeStatResultStru sResStru;
     codeStat->codeStatResGet( sResStru );
     codeStat->codeStatResPrint( sResStru );
+#endif
+
+    CodeStatisticsWindow *win = new CodeStatisticsWindow( this );
+    win->show();
 }
 
 MainWindow::~MainWindow()

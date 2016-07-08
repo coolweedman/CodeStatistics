@@ -16,15 +16,19 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     ../Code/App/filecodestatistics.cpp \
     ../Code/App/dirscanstatistics.cpp \
-    ../Code/App/codestatistics.cpp
+    ../Code/App/codestatistics.cpp \
+    ../Code/Ui/codestatisticswindow.cpp
 
 HEADERS  += mainwindow.h \
     ../Code/Comm/typedefs.h \
     ../Code/App/filecodestatistics.h \
     ../Code/App/dirscanstatistics.h \
-    ../Code/App/codestatistics.h
+    ../Code/App/codestatistics.h \
+    ../Code/Ui/codestatisticswindow.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    ../Code/Ui/codestatisticswindow.ui
 
 INCLUDEPATH += ../Code/Comm
 INCLUDEPATH += ../Code/App
+INCLUDEPATH += ../Code/Ui

@@ -76,7 +76,6 @@ void CCodeStatistics::codeStatProc(QString strDir)
         pairFileStat.second = sStru;
 
         mvecPairCodeStatResult->push_back( pairFileStat );
-
     }
 }
 

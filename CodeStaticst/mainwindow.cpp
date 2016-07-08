@@ -29,6 +29,15 @@ MainWindow::MainWindow(QWidget *parent) :
 
     CCodeStatistics *codeStat = new CCodeStatistics();
     codeStat->codeStatProc( "Statistics" );
+
+#if 0
+    QVector<QPair<QString, SCodeStatResultStru> > vecPairDetailRes;
+    codeStat->codeStatDetailResGet( vecPairDetailRes );
+    codeStat->codeStatDetailResPrint( vecPairDetailRes );
+#endif
+    SCodeStatResultStru sResStru;
+    codeStat->codeStatResGet( sResStru );
+    codeStat->codeStatResPrint( sResStru );
 }
 
 MainWindow::~MainWindow()

@@ -13,8 +13,14 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    ../Code/App/filecodestatistics.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    ../Code/Comm/typedefs.h \
+    ../Code/App/filecodestatistics.h
 
 FORMS    += mainwindow.ui
+
+INCLUDEPATH += ../Code/Comm
+INCLUDEPATH += ../Code/App

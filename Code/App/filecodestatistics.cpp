@@ -79,22 +79,23 @@ void CFileCodeStatistics::fcsFileScan(void)
             fcsFsmCharProc( strLine.at(i).toLatin1() );
         }
         fcsFsmCharProc( '\n' );
-
-        qDebug()<<strLine;
     }
 }
 
 
 
 /**
- *  @fn     CFileCodeStatistics::fcsResGet(SEcodeStatisticsStru &sStru)
+ *  @fn     CFileCodeStatistics::fcsResGet(SCodeStatResultStru &sStru)
  *  @brief  代码统计 结果获取
  *  @param  [out] sStru 统计结果
  *  @return 无
  */
-void CFileCodeStatistics::fcsResGet(SEcodeStatisticsStru &sStru)
+void CFileCodeStatistics::fcsResGet(SCodeStatResultStru &sStru)
 {
-    memcpy( &sStru, &msCodeStat, sizeof(SEcodeStatisticsStru) );
+    sStru.uiEffeCodeLines    = msCodeStat.uiEffeCodeLines;
+    sStru.uiCommentCodeLines = msCodeStat.uiCommentCodeLines;
+    sStru.uiEmptyLineNum     = msCodeStat.uiEmptyLineNum;
+    sStru.uiTotalLineNum     = msCodeStat.uiTotalLineNum;
 }
 
 
@@ -104,12 +105,12 @@ void CFileCodeStatistics::fcsResGet(SEcodeStatisticsStru &sStru)
  *  @brief  代码统计 结果打印
  *  @return 无
  */
-void CFileCodeStatistics::fcsResultPrint(void)
+void CFileCodeStatistics::fcsResPrint(const SCodeStatResultStru &sStru)
 {
-    qDebug()<<"EffeCode Line "<<msCodeStat.uiEffeCodeLines;
-    qDebug()<<"Comment  Line "<<msCodeStat.uiCommentCodeLines;
-    qDebug()<<"Empty    Line "<<msCodeStat.uiEmptyLineNum;
-    qDebug()<<"Total    Line "<<msCodeStat.uiTotalLineNum;
+    qDebug()<<"EffeCode Line "<<sStru.uiEffeCodeLines;
+    qDebug()<<"Comment  Line "<<sStru.uiCommentCodeLines;
+    qDebug()<<"Empty    Line "<<sStru.uiEmptyLineNum;
+    qDebug()<<"Total    Line "<<sStru.uiTotalLineNum;
 }
 
 

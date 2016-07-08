@@ -3,7 +3,7 @@
 #include "filecodestatistics.h"
 #include "dirscanstatistics.h"
 #include <QDebug>
-
+#include "codestatistics.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -15,7 +15,6 @@ MainWindow::MainWindow(QWidget *parent) :
     CFileCodeStatistics *file = new CFileCodeStatistics( "a.txt" );
     file->fcsFileScan();
     file->fcsResultPrint();
-#endif
 
     CDirScanStatistics *dir = new CDirScanStatistics();
     dir->dirFileFilterScan( "Statistics" );
@@ -26,6 +25,10 @@ MainWindow::MainWindow(QWidget *parent) :
     foreach (QString strFileName, vecStrFileName) {
         qDebug()<<strFileName;
     }
+#endif
+
+    CCodeStatistics *codeStat = new CCodeStatistics();
+    codeStat->codeStatProc( "Statistics" );
 }
 
 MainWindow::~MainWindow()

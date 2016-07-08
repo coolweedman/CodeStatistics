@@ -14,11 +14,13 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    ../Code/App/filecodestatistics.cpp
+    ../Code/App/filecodestatistics.cpp \
+    ../Code/App/dirscanstatistics.cpp
 
 HEADERS  += mainwindow.h \
     ../Code/Comm/typedefs.h \
-    ../Code/App/filecodestatistics.h
+    ../Code/App/filecodestatistics.h \
+    ../Code/App/dirscanstatistics.h
 
 FORMS    += mainwindow.ui
 

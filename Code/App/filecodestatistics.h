@@ -72,7 +72,7 @@ struct SEcodeStatisticsStru {
  *  @class  CFileCodeStatistics
  *  @brief  代码统计 类
  */
-class CFileCodeStatistics : QObject {
+class CFileCodeStatistics : public QObject {
 public:
     CFileCodeStatistics(QString strFileName);   /**< 代码统计 构造函数 */
    ~CFileCodeStatistics(void);                  /**< 代码统计 析构函数 */

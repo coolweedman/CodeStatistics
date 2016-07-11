@@ -31,6 +31,7 @@
 CDirScanStatistics::CDirScanStatistics(void)
 {
     mpvecStrFileName = new QVector<QString>();
+    mpvecStrDirName  = new QVector<QString>();
     mpListFileFilter = new QStringList();
 
     mpListFileFilter->push_back( "*.c" );
@@ -48,6 +49,8 @@ CDirScanStatistics::CDirScanStatistics(void)
 CDirScanStatistics::~CDirScanStatistics(void)
 {
     delete mpvecStrFileName;
+    delete mpvecStrDirName;
+    delete mpListFileFilter;
 }
 
 
@@ -75,7 +78,8 @@ void CDirScanStatistics::dirFileFilterScan(QString strPath)
     QFileInfoList listFileInfo = dir.entryInfoList( *mpListFileFilter );
 
     for ( int i=0; i<listFileInfo.length(); i++ ) {
-        mpvecStrFileName->push_back( strPath + "/" + listFileInfo.at(i).fileName() );
+        mpvecStrDirName->push_back( strPath );
+        mpvecStrFileName->push_back( listFileInfo.at(i).fileName() );
     }
 }
 
@@ -90,10 +94,17 @@ void CDirScanStatistics::dirFileFilterScan(QString strPath)
 void CDirScanStatistics::dirFileScanedGet(QVector<QString> &rVecStrFileName)
 {
     for ( int i=0; i<mpvecStrFileName->length(); i++ ) {
-        rVecStrFileName.push_back( mpvecStrFileName->at(i) );
+        rVecStrFileName.push_back( mpvecStrDirName->at(i) + "/" + mpvecStrFileName->at(i) );
     }
 }
 
+
+void CDirScanStatistics::dirFileNameGet(QVector<QString> &rVecStrFileName)
+{
+    for ( int i=0; i<mpvecStrFileName->length(); i++ ) {
+        rVecStrFileName.push_back( mpvecStrFileName->at(i) );
+    }
+}
 
 
 /**

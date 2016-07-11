@@ -11,6 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = CodeStaticst
 TEMPLATE = app
 
+RC_FILE += ../Resource/icon.rc
 
 SOURCES += main.cpp\
     ../Code/App/filecodestatistics.cpp \

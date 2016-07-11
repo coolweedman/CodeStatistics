@@ -24,12 +24,21 @@ private slots:
     void on_pushButtonOk_clicked();
 
 private:
-    Ui::CodeStatisticsWindow *ui;
+    void codeStatStatusBarUpdate(void);
+    void codeStatTableWidgetUpdate(void);
+
+private:
+    Ui::CodeStatisticsWindow   *ui;
+    SCodeStatResultStru         msCodeStatResult;
+
+    QVector<QPair<QString, SCodeStatResultStru> > msVecCodeStatDetailResult;
 
     QLabel  *mpLabelEffeLine;
     QLabel  *mpLabelCommentLine;
     QLabel  *mpLabelEmptyLine;
     QLabel  *mpLabelTotalLine;
+
+    QLabel  *mpLabelTotalFiles;
 };
 
 #endif // CODESTATISTICSWINDOW_H

@@ -14,42 +14,54 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLineEdit" name="lineEditDir">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>10</y>
-      <width>321</width>
-      <height>20</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButtonLookFor">
-    <property name="geometry">
-     <rect>
-      <x>360</x>
-      <y>10</y>
-      <width>75</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>浏览...</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButtonOk">
-    <property name="geometry">
-     <rect>
-      <x>450</x>
-      <y>10</y>
-      <width>75</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Ok</string>
-    </property>
-   </widget>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QLineEdit" name="lineEditDir"/>
+    </item>
+    <item row="0" column="1">
+     <widget class="QPushButton" name="pushButtonLookFor">
+      <property name="text">
+       <string>浏览...</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QPushButton" name="pushButtonOk">
+      <property name="text">
+       <string>Ok</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0" colspan="3">
+     <widget class="QTableWidget" name="tableWidget">
+      <column>
+       <property name="text">
+        <string>文件</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>有效代码行数</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>注释代码行数</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>空行数</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>总行数</string>
+       </property>
+      </column>
+     </widget>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

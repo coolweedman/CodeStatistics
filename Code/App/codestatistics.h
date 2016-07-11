@@ -41,6 +41,10 @@ public:
     CCodeStatistics(void);  /**< 目录代码递归统计 构造函数 */
    ~CCodeStatistics(void);  /**< 目录代码递归统计 析构函数 */
 
+signals:
+    void codeStatProgressSig(uint32_t ulCur, uint32_t ulTotal);
+    void codeStatDoneSig(void);
+
 public:
     void codeStatProc(QString strDir);                                  /**< 目录代码递归统计 统计 */
     void codeStatResGet(SCodeStatResultStru &sResStru);                 /**< 目录代码递归统计 结果获取 */

@@ -4,6 +4,7 @@
 #include <QLabel>
 #include <QUrl>
 #include <QDesktopServices>
+#include <QProgressBar>
 
 
 /**********************************************************************************************************
@@ -68,7 +69,12 @@ void CodeStatisticsWindow::statusBarInit(void)
     statusBar()->addWidget( mpLabelCommentLine );
     statusBar()->addWidget( mpLabelEmptyLine );
     statusBar()->addWidget( mpLabelTotalLine );
+
     statusBar()->addWidget( mpLabelTotalFiles );
+    mpProgressBar = new QProgressBar();
+    mpProgressBar->setFixedHeight( 20 );
+    statusBar()->addWidget( mpProgressBar );
+    mpProgressBar->setVisible( false );
 }
 
 
@@ -117,6 +123,18 @@ void CodeStatisticsWindow::codeStatTableWidgetUpdate(void)
 }
 
 
+void CodeStatisticsWindow::codeStatProgressUpdate(uint32_t ulCur, uint32_t ulTotal)
+{
+    mpProgressBar->setVisible( true );
+    mpProgressBar->setValue( ulCur * 100 / ulTotal );
+}
+
+
+void CodeStatisticsWindow::codeStatProgressDone(void)
+{
+    mpProgressBar->setVisible( false );
+}
+
 
 /**
  *  @fn     CodeStatisticsWindow::on_pushButtonLookFor_clicked(void)
@@ -140,6 +158,14 @@ void CodeStatisticsWindow::on_pushButtonLookFor_clicked()
 void CodeStatisticsWindow::on_pushButtonOk_clicked()
 {
     CCodeStatistics *phCodeStat = new CCodeStatistics();
+    connect( phCodeStat,
+             SIGNAL(codeStatProgressSig(uint32_t,uint32_t)),
+             this,
+             SLOT(codeStatProgressUpdate(uint32_t,uint32_t)) );
+    connect( phCodeStat,
+             SIGNAL(codeStatDoneSig()),
+             this,
+             SLOT(codeStatProgressDone()) );
     phCodeStat->codeStatProc( ui->lineEditDir->text() );
 
     msVecCodeStatDetailResult.clear();
@@ -164,10 +190,14 @@ void CodeStatisticsWindow::on_actionExit_triggered()
     this->close();
 }
 
+
+
 void CodeStatisticsWindow::on_actionAbout_triggered()
 {
     QDesktopServices::openUrl ( QUrl::fromLocalFile("Version/Version.txt") );
 }
+
+
 
 /**********************************************************************************************************
   END FILE

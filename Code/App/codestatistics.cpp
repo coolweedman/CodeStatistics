@@ -61,11 +61,13 @@ void CCodeStatistics::codeStatProc(QString strDir)
     CDirScanStatistics *phDirScan = new CDirScanStatistics();
     phDirScan->dirFileFilterScan( strDir );
 
+    QVector<QString> listFileFullName;
+    phDirScan->dirFileScanedGet( listFileFullName );
     QVector<QString> listFileName;
-    phDirScan->dirFileScanedGet( listFileName );
+    phDirScan->dirFileNameGet( listFileName );
 
-    for ( int i=0; i<listFileName.length(); i++ ) {
-        CFileCodeStatistics fileCodeStat( listFileName.at(i) );
+    for ( int i=0; i<listFileFullName.length(); i++ ) {
+        CFileCodeStatistics fileCodeStat( listFileFullName.at(i) );
         fileCodeStat.fcsFileScan();
 
         SCodeStatResultStru sStru;
@@ -76,7 +78,6 @@ void CCodeStatistics::codeStatProc(QString strDir)
         pairFileStat.second = sStru;
 
         mvecPairCodeStatResult->push_back( pairFileStat );
-
     }
 }
 

@@ -49,9 +49,11 @@ public:
 public:
     void dirFileFilterScan(QString strPath);                        /**< 文件目录扫描过滤 目录扫描 */
     void dirFileScanedGet(QVector<QString> &rVecStrFileName);       /**< 文件目录扫描过滤 结果获取 */
+    void dirFileNameGet(QVector<QString> &rVecStrFileName);         /**< 文件目录扫描过滤 结果获取 */
     void dirPrint(void);                                            /**< 文件目录扫描过滤 打印文件名 */
 
 private:
+    QVector<QString>   *mpvecStrDirName;        /**< 文件夹 */
     QVector<QString>   *mpvecStrFileName;       /**< 文件名 */
     QStringList        *mpListFileFilter;       /**< 过滤规则 */
 };

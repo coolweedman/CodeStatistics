@@ -5,7 +5,7 @@
 #include <QUrl>
 #include <QDesktopServices>
 #include <QProgressBar>
-
+#include "filefilterwindow.h"
 
 /**********************************************************************************************************
   宏定义
@@ -30,6 +30,8 @@ CodeStatisticsWindow::CodeStatisticsWindow(QWidget *parent) :
     statusBarInit();
 
     this->setWindowTitle( "Code Statistics V" + QString::number( CODE_STAT_VERSION/100.0, 'f', 2 ) );
+
+    mphFileFilterWindow = new FileFilterWindow(this);
 }
 
 
@@ -157,7 +159,12 @@ void CodeStatisticsWindow::on_pushButtonLookFor_clicked()
  */
 void CodeStatisticsWindow::on_pushButtonOk_clicked()
 {
+    QStringList listStrFilter;
+
     CCodeStatistics *phCodeStat = new CCodeStatistics();
+    mphFileFilterWindow->ffwFilterGet( listStrFilter );
+    phCodeStat->codeStatFilterSet( listStrFilter );
+
     connect( phCodeStat,
              SIGNAL(codeStatProgressSig(uint32_t,uint32_t)),
              this,
@@ -166,6 +173,7 @@ void CodeStatisticsWindow::on_pushButtonOk_clicked()
              SIGNAL(codeStatDoneSig()),
              this,
              SLOT(codeStatProgressDone()) );
+
     phCodeStat->codeStatProc( ui->lineEditDir->text() );
 
     msVecCodeStatDetailResult.clear();
@@ -198,6 +206,11 @@ void CodeStatisticsWindow::on_actionAbout_triggered()
 }
 
 
+
+void CodeStatisticsWindow::on_actionFilter_triggered()
+{
+    mphFileFilterWindow->show();
+}
 
 /**********************************************************************************************************
   END FILE

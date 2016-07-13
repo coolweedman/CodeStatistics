@@ -48,6 +48,7 @@ signals:
 public:
     void codeStatProc(QString strDir);                                  /**< 目录代码递归统计 统计 */
     void codeStatResGet(SCodeStatResultStru &sResStru);                 /**< 目录代码递归统计 结果获取 */
+    void codeStatFilterSet(QStringList &rListStrFilter);
     void codeStatDetailResGet(QVector< QPair<QString, SCodeStatResultStru> > &rVecPair);    /**< 目录代码递归统计 详细结果获取 */
 
     static void codeStatResPrint(SCodeStatResultStru &sResStru);        /**< 目录代码递归统计 结果打印 */
@@ -55,6 +56,7 @@ public:
 
 private:
     QVector< QPair<QString, SCodeStatResultStru> > *mvecPairCodeStatResult; /**< 详细结果 */
+    QStringList    *mpStrListFilter;
 };
 
 #endif // CODESTATISTICS

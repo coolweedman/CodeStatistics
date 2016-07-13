@@ -14,6 +14,8 @@ class CodeStatisticsWindow;
 
 class QLabel;
 class QProgressBar;
+class FileFilterWindow;
+
 
 
 /**********************************************************************************************************
@@ -48,6 +50,7 @@ private slots:
     void on_pushButtonOk_clicked();
     void on_actionExit_triggered();
     void on_actionAbout_triggered();
+    void on_actionFilter_triggered();
 
 private:
     Ui::CodeStatisticsWindow   *ui;
@@ -61,7 +64,9 @@ private:
     QLabel  *mpLabelTotalLine;
     QLabel  *mpLabelTotalFiles;
 
-    QProgressBar     *mpProgressBar;
+    QProgressBar       *mpProgressBar;
+
+    FileFilterWindow   *mphFileFilterWindow;
 };
 
 #endif // CODESTATISTICSWINDOW_H

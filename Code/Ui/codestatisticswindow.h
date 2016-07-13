@@ -13,6 +13,8 @@ class CodeStatisticsWindow;
 **********************************************************************************************************/
 
 class QLabel;
+class QProgressBar;
+class FileFilterWindow;
 
 
 
@@ -40,11 +42,15 @@ private:
     void codeStatTableWidgetUpdate(void);   /**< 代码统计窗口 详细信息更新 */
 
 private slots:
+    void codeStatProgressUpdate(uint32_t ulCur, uint32_t ulTotal);
+    void codeStatProgressDone(void);
+
+private slots:
     void on_pushButtonLookFor_clicked();
     void on_pushButtonOk_clicked();
     void on_actionExit_triggered();
-
     void on_actionAbout_triggered();
+    void on_actionFilter_triggered();
 
 private:
     Ui::CodeStatisticsWindow   *ui;
@@ -57,6 +63,10 @@ private:
     QLabel  *mpLabelEmptyLine;
     QLabel  *mpLabelTotalLine;
     QLabel  *mpLabelTotalFiles;
+
+    QProgressBar       *mpProgressBar;
+
+    FileFilterWindow   *mphFileFilterWindow;
 };
 
 #endif // CODESTATISTICSWINDOW_H

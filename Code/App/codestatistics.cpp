@@ -34,6 +34,7 @@
 CCodeStatistics::CCodeStatistics(void)
 {
     mvecPairCodeStatResult = new QVector< QPair<QString, SCodeStatResultStru> >();
+    mpStrListFilter = new QStringList();
 }
 
 
@@ -59,6 +60,7 @@ CCodeStatistics::~CCodeStatistics(void)
 void CCodeStatistics::codeStatProc(QString strDir)
 {
     CDirScanStatistics *phDirScan = new CDirScanStatistics();
+    phDirScan->dirFileFilterSet( *mpStrListFilter );
     phDirScan->dirFileFilterScan( strDir );
 
     QVector<QString> listFileFullName;
@@ -78,7 +80,11 @@ void CCodeStatistics::codeStatProc(QString strDir)
         pairFileStat.second = sStru;
 
         mvecPairCodeStatResult->push_back( pairFileStat );
+
+        emit codeStatProgressSig( i, listFileFullName.length() );
     }
+
+    emit codeStatDoneSig();
 }
 
 
@@ -104,6 +110,15 @@ void CCodeStatistics::codeStatResGet(SCodeStatResultStru &sResStru)
     }
 }
 
+
+void CCodeStatistics::codeStatFilterSet(QStringList &rListStrFilter)
+{
+    mpStrListFilter->clear();
+
+    for ( int i=0; i<rListStrFilter.length(); i++ ) {
+        mpStrListFilter->push_back( rListStrFilter.at(i) );
+    }
+}
 
 
 /**

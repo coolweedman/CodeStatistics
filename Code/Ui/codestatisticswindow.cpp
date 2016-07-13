@@ -1,3 +1,14 @@
+/******************************************************************************************************//**
+ *  @file       codestatisticswindow.cpp
+ *  @brief      代码统计窗口 源文件
+ *
+ *              统计代码
+ *              选择路径, 配置后缀名, 计算代码量, 显示结果
+ *  @author     coolweedman
+ *  @version    V1.00
+ *  @date       2016-7-13
+ *********************************************************************************************************/
+
 #include "codestatisticswindow.h"
 #include "ui_codestatisticswindow.h"
 #include <QFileDialog>
@@ -11,7 +22,7 @@
   宏定义
 **********************************************************************************************************/
 
-#define CODE_STAT_VERSION           ( 101 )
+#define CODE_STAT_VERSION           ( 102 )
 
 
 
@@ -117,7 +128,7 @@ void CodeStatisticsWindow::codeStatTableWidgetUpdate(void)
     ui->tableWidget->setRowCount( msVecCodeStatDetailResult.length() );
     for ( int i=0; i<msVecCodeStatDetailResult.length(); i++ ) {
         ui->tableWidget->setItem( i, 0, new QTableWidgetItem(msVecCodeStatDetailResult.at(i).first) );
-        ui->tableWidget->setItem( i, 1, new QTableWidgetItem( QString::number(msVecCodeStatDetailResult.at(i).second.uiEffeCodeLines) ) );
+        ui->tableWidget->setItem( i, 1, new QTableWidgetItem(QString::number(msVecCodeStatDetailResult.at(i).second.uiEffeCodeLines) ) );
         ui->tableWidget->setItem( i, 2, new QTableWidgetItem( QString::number(msVecCodeStatDetailResult.at(i).second.uiCommentCodeLines) ) );
         ui->tableWidget->setItem( i, 3, new QTableWidgetItem( QString::number(msVecCodeStatDetailResult.at(i).second.uiEmptyLineNum) ) );
         ui->tableWidget->setItem( i, 4, new QTableWidgetItem( QString::number(msVecCodeStatDetailResult.at(i).second.uiTotalLineNum) ) );

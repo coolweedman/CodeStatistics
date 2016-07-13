@@ -87,12 +87,12 @@ void CDirScanStatistics::dirFileFilterScan(QString strPath)
 
 
 /**
- *  @fn     CDirScanStatistics::dirFileScanedGet(QVector<QString> &rVecStrFileName)
+ *  @fn     CDirScanStatistics::dirFileFullNameGet(QVector<QString> &rVecStrFileName)
  *  @brief  文件目录扫描过滤 结果获取
  *  @param  [out] rVecStrFileName   文件名
  *  @return 无
  */
-void CDirScanStatistics::dirFileScanedGet(QVector<QString> &rVecStrFileName)
+void CDirScanStatistics::dirFileFullNameGet(QVector<QString> &rVecStrFileName)
 {
     for ( int i=0; i<mpvecStrFileName->length(); i++ ) {
         rVecStrFileName.push_back( mpvecStrDirName->at(i) + "/" + mpvecStrFileName->at(i) );

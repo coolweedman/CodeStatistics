@@ -41,7 +41,7 @@ public:
     void dirFileFilterSet(const QStringList &rFilter);
     void dirFileFilterGet(QStringList &rFilter);
     void dirFileFilterScan(QString strPath);                        /**< 文件目录扫描过滤 目录扫描 */
-    void dirFileScanedGet(QVector<QString> &rVecStrFileName);       /**< 文件目录扫描过滤 结果获取 */
+    void dirFileFullNameGet(QVector<QString> &rVecStrFileName);     /**< 文件目录扫描过滤 结果获取 */
     void dirFileNameGet(QVector<QString> &rVecStrFileName);         /**< 文件目录扫描过滤 结果获取 */
     void dirPrint(void);                                            /**< 文件目录扫描过滤 打印文件名 */
 

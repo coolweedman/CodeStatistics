@@ -14,8 +14,10 @@
 
 #include "filecodestatistics.h"
 #include "dirscanstatistics.h"
+#include <QThread>
 
 
+class CFileCodeStatThread;
 
 /**********************************************************************************************************
   类型定义
@@ -36,7 +38,12 @@ signals:
     void codeStatProgressSig(uint32_t ulCur, uint32_t ulTotal);
     void codeStatDoneSig(void);
 
+public slots:
+    void codeStatOneFileStart(int iId);
+    void codeStatOneFileDoneProc(int iId, QString strFileNmae, const SCodeStatResultStru *psCodeStatResult);
+
 public:
+    void codeStatFileGet(QString strDir);
     void codeStatProc(QString strDir);                                  /**< 目录代码递归统计 统计 */
     void codeStatResGet(SCodeStatResultStru &sResStru);                 /**< 目录代码递归统计 结果获取 */
     void codeStatFilterSet(QStringList &rListStrFilter);
@@ -47,7 +54,11 @@ public:
 
 private:
     QVector< QPair<QString, SCodeStatResultStru> > *mvecPairCodeStatResult; /**< 详细结果 */
-    QStringList    *mpStrListFilter;
+    QVector<CFileCodeStatThread *>                 *mpFileCodeStatHandler;
+
+    QStringList        *mpStrListFilter;
+    QVector<QString>   *mpListFileFullName;
+    QVector<QString>   *mpListFileName;
 };
 
 #endif // CODESTATISTICS

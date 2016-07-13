@@ -73,10 +73,12 @@ private:
     QLabel  *mpLabelEmptyLine;
     QLabel  *mpLabelTotalLine;
     QLabel  *mpLabelTotalFiles;
+    QLabel  *mpLabelTotalTime;
 
     QProgressBar       *mpProgressBar;
 
     FileFilterWindow   *mphFileFilterWindow;
+    CCodeStatistics    *mphCodeStat;
 };
 
 #endif // CODESTATISTICSWINDOW_H

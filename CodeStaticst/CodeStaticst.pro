@@ -18,7 +18,8 @@ SOURCES += main.cpp\
     ../Code/App/dirscanstatistics.cpp \
     ../Code/App/codestatistics.cpp \
     ../Code/Ui/codestatisticswindow.cpp \
-    ../Code/Ui/filefilterwindow.cpp
+    ../Code/Ui/filefilterwindow.cpp \
+    ../Code/Thread/filecodestatthread.cpp
 
 HEADERS  += \
     ../Code/Comm/typedefs.h \
@@ -26,7 +27,8 @@ HEADERS  += \
     ../Code/App/dirscanstatistics.h \
     ../Code/App/codestatistics.h \
     ../Code/Ui/codestatisticswindow.h \
-    ../Code/Ui/filefilterwindow.h
+    ../Code/Ui/filefilterwindow.h \
+    ../Code/Thread/filecodestatthread.h
 
 FORMS    += \
     ../Code/Ui/codestatisticswindow.ui \

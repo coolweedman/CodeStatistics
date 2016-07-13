@@ -17,6 +17,8 @@
 #include <QDesktopServices>
 #include <QProgressBar>
 #include "filefilterwindow.h"
+#include <QTime>
+#include <QDebug>
 
 
 /**********************************************************************************************************
@@ -53,6 +55,16 @@ CodeStatisticsWindow::CodeStatisticsWindow(QWidget *parent) :
     this->setWindowTitle( "Code Statistics V" + QString::number( CODE_STAT_VERSION/100.0, 'f', 2 ) );
 
     mphFileFilterWindow = new FileFilterWindow(this);
+    mphCodeStat = new CCodeStatistics();
+
+    connect( mphCodeStat,
+             SIGNAL(codeStatProgressSig(uint32_t,uint32_t)),
+             this,
+             SLOT(codeStatProgressUpdate(uint32_t,uint32_t)) );
+    connect( mphCodeStat,
+             SIGNAL(codeStatDoneSig()),
+             this,
+             SLOT(codeStatProgressDone()) );
 }
 
 
@@ -81,19 +93,22 @@ void CodeStatisticsWindow::statusBarInit(void)
     mpLabelEmptyLine   = new QLabel();
     mpLabelTotalLine   = new QLabel();
     mpLabelTotalFiles  = new QLabel();
+    mpLabelTotalTime   = new QLabel();
 
     mpLabelEffeLine->setText( "Effe: ?" );
     mpLabelCommentLine->setText( "Comment: ?" );
     mpLabelEmptyLine->setText( "Empty: ?" );
     mpLabelTotalLine->setText( "Total: ?" );
     mpLabelTotalFiles->setText( "File(s): ?" );
+    mpLabelTotalTime->setText( "Time(s): ?" );
 
     statusBar()->addWidget( mpLabelEffeLine );
     statusBar()->addWidget( mpLabelCommentLine );
     statusBar()->addWidget( mpLabelEmptyLine );
     statusBar()->addWidget( mpLabelTotalLine );
-
     statusBar()->addWidget( mpLabelTotalFiles );
+    statusBar()->addWidget( mpLabelTotalTime );
+
     mpProgressBar = new QProgressBar();
     mpProgressBar->setFixedHeight( 20 );
     statusBar()->addWidget( mpProgressBar );
@@ -155,6 +170,14 @@ void CodeStatisticsWindow::codeStatProgressUpdate(uint32_t ulCur, uint32_t ulTot
 void CodeStatisticsWindow::codeStatProgressDone(void)
 {
     mpProgressBar->setVisible( false );
+
+    mphCodeStat->codeStatResGet( msCodeStatResult );
+    mphCodeStat->codeStatDetailResGet( msVecCodeStatDetailResult );
+
+    mphCodeStat->codeStatResPrint( msCodeStatResult );
+
+    codeStatTableWidgetUpdate();
+    codeStatStatusBarUpdate();
 }
 
 
@@ -181,29 +204,12 @@ void CodeStatisticsWindow::on_pushButtonOk_clicked()
 {
     QStringList listStrFilter;
 
-    CCodeStatistics *phCodeStat = new CCodeStatistics();
     mphFileFilterWindow->ffwFilterGet( listStrFilter );
-    phCodeStat->codeStatFilterSet( listStrFilter );
+    mphCodeStat->codeStatFilterSet( listStrFilter );
 
-    connect( phCodeStat,
-             SIGNAL(codeStatProgressSig(uint32_t,uint32_t)),
-             this,
-             SLOT(codeStatProgressUpdate(uint32_t,uint32_t)) );
-    connect( phCodeStat,
-             SIGNAL(codeStatDoneSig()),
-             this,
-             SLOT(codeStatProgressDone()) );
+    //////////
+    mphCodeStat->codeStatProc( ui->lineEditDir->text() );
 
-    phCodeStat->codeStatProc( ui->lineEditDir->text() );
-
-    msVecCodeStatDetailResult.clear();
-    phCodeStat->codeStatResGet( msCodeStatResult );
-    phCodeStat->codeStatDetailResGet( msVecCodeStatDetailResult );
-
-    phCodeStat->codeStatResPrint( msCodeStatResult );
-
-    codeStatTableWidgetUpdate();
-    codeStatStatusBarUpdate();
 }
 
 

@@ -69,6 +69,7 @@ struct SCodeStatResultStru {
     uint32_t            uiEmptyLineNum;         /**< 空行代码行数 */
     uint32_t            uiTotalLineNum;         /**< 总行数 */
 };
+Q_DECLARE_METATYPE(SCodeStatResultStru)
 
 /**
  *  @class  CFileCodeStatistics

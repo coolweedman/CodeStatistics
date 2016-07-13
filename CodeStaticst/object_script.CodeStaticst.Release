@@ -1,0 +1,14 @@
+INPUT(
+./release\main.o
+./release\filecodestatistics.o
+./release\dirscanstatistics.o
+./release\codestatistics.o
+./release\codestatisticswindow.o
+./release\filefilterwindow.o
+./release\filecodestatthread.o
+./release\moc_dirscanstatistics.o
+./release\moc_codestatistics.o
+./release\moc_codestatisticswindow.o
+./release\moc_filefilterwindow.o
+./release\moc_filecodestatthread.o
+);

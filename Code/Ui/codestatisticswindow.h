@@ -1,3 +1,14 @@
+/******************************************************************************************************//**
+ *  @file       codestatisticswindow.h
+ *  @brief      代码统计窗口 头文件
+ *
+ *              统计代码
+ *              选择路径, 配置后缀名, 计算代码量, 显示结果
+ *  @author     coolweedman
+ *  @version    V1.00
+ *  @date       2016-7-13
+ *********************************************************************************************************/
+
 #ifndef CODESTATISTICSWINDOW_H
 #define CODESTATISTICSWINDOW_H
 
@@ -15,7 +26,6 @@ class CodeStatisticsWindow;
 class QLabel;
 class QProgressBar;
 class FileFilterWindow;
-
 
 
 /**********************************************************************************************************
@@ -63,10 +73,12 @@ private:
     QLabel  *mpLabelEmptyLine;
     QLabel  *mpLabelTotalLine;
     QLabel  *mpLabelTotalFiles;
+    QLabel  *mpLabelTotalTime;
 
     QProgressBar       *mpProgressBar;
 
     FileFilterWindow   *mphFileFilterWindow;
+    CCodeStatistics    *mphCodeStat;
 };
 
 #endif // CODESTATISTICSWINDOW_H

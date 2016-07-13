@@ -4,18 +4,9 @@
  *
  *              根据文件名, 统计代码
  *              有效代码行/注释行/空行/总行数
- *  @author     CaiWeiMou
+ *  @author     coolweedman
  *  @version    V1.00
  *  @date       2016-7-8
- *
- *  @note       Guangzhou ZLGMCU Technology Co., LTD
- *
- *  @par
- *      广州周立功单片机科技有限公司所提供的所有服务内容旨在协助客户加速产品的研发进度，在服务过程中所提供
- *  的任何程序、文档、测试结果、方案、支持等资料和信息，都仅供参考，客户有权不使用或自行参考修改，本公司不
- *  提供任何的完整性、可靠性等保证，若在客户使用过程中因任何原因造成的特别的、偶然的或间接的损失，本公司不
- *  承担任何责任。
- *                                                                        ——广州周立功单片机科技有限公司
  *********************************************************************************************************/
 
 #ifndef FILECODESTATISTICS
@@ -78,6 +69,7 @@ struct SCodeStatResultStru {
     uint32_t            uiEmptyLineNum;         /**< 空行代码行数 */
     uint32_t            uiTotalLineNum;         /**< 总行数 */
 };
+Q_DECLARE_METATYPE(SCodeStatResultStru)
 
 /**
  *  @class  CFileCodeStatistics
@@ -85,11 +77,11 @@ struct SCodeStatResultStru {
  */
 class CFileCodeStatistics : public QObject {
 public:
-    CFileCodeStatistics(QString strFileName);       /**< 代码统计 构造函数 */
+    CFileCodeStatistics(void);                      /**< 代码统计 构造函数 */
    ~CFileCodeStatistics(void);                      /**< 代码统计 析构函数 */
 
 public:
-    void fcsFileScan(void);                         /**< 代码统计 文件扫描 */
+    void fcsFileScan(QString strFileName);          /**< 代码统计 文件扫描 */
     void fcsResGet(SCodeStatResultStru &sStru);     /**< 代码统计 结果获取 */
 
     static void fcsResPrint(const SCodeStatResultStru &sStru);   /**< 代码统计 结果打印 */
@@ -106,8 +98,7 @@ protected:
     void fcsFsmSlashOutProc(char cChr);             /**< 代码统计 块注释退出处理 */
 
 protected:
-    QFile                  *mpFile;                 /**< 代码统计 扫描文件 */
-    SCodeStatisticsStru    msCodeStat;              /**< 代码统计 统计结构体 */
+    SCodeStatisticsStru     msCodeStat;             /**< 代码统计 统计结构体 */
 };
 
 #endif // FILECODESTATISTICS

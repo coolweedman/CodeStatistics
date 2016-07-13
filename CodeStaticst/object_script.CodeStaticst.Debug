@@ -1,0 +1,14 @@
+INPUT(
+./debug\main.o
+./debug\filecodestatistics.o
+./debug\dirscanstatistics.o
+./debug\codestatistics.o
+./debug\codestatisticswindow.o
+./debug\filefilterwindow.o
+./debug\filecodestatthread.o
+./debug\moc_dirscanstatistics.o
+./debug\moc_codestatistics.o
+./debug\moc_codestatisticswindow.o
+./debug\moc_filefilterwindow.o
+./debug\moc_filecodestatthread.o
+);

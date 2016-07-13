@@ -3,18 +3,9 @@
  *  @brief      目录扫描 源文件
  *
  *              递归扫描自定目录, 过滤后缀名, 获取文件名
- *  @author     CaiWeiMou
+ *  @author     coolweedman
  *  @version    V1.00
  *  @date       2016-7-8
- *
- *  @note       Guangzhou ZLGMCU Technology Co., LTD
- *
- *  @par
- *      广州周立功单片机科技有限公司所提供的所有服务内容旨在协助客户加速产品的研发进度，在服务过程中所提供
- *  的任何程序、文档、测试结果、方案、支持等资料和信息，都仅供参考，客户有权不使用或自行参考修改，本公司不
- *  提供任何的完整性、可靠性等保证，若在客户使用过程中因任何原因造成的特别的、偶然的或间接的损失，本公司不
- *  承担任何责任。
- *                                                                        ——广州周立功单片机科技有限公司
  *********************************************************************************************************/
 
 #include "dirscanstatistics.h"
@@ -96,12 +87,12 @@ void CDirScanStatistics::dirFileFilterScan(QString strPath)
 
 
 /**
- *  @fn     CDirScanStatistics::dirFileScanedGet(QVector<QString> &rVecStrFileName)
+ *  @fn     CDirScanStatistics::dirFileFullNameGet(QVector<QString> &rVecStrFileName)
  *  @brief  文件目录扫描过滤 结果获取
  *  @param  [out] rVecStrFileName   文件名
  *  @return 无
  */
-void CDirScanStatistics::dirFileScanedGet(QVector<QString> &rVecStrFileName)
+void CDirScanStatistics::dirFileFullNameGet(QVector<QString> &rVecStrFileName)
 {
     for ( int i=0; i<mpvecStrFileName->length(); i++ ) {
         rVecStrFileName.push_back( mpvecStrDirName->at(i) + "/" + mpvecStrFileName->at(i) );

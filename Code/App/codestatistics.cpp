@@ -4,18 +4,9 @@
  *
  *              递归扫描自定目录, 过滤后缀名, 获取文件名
  *              统计有效代码行数/注释行/空行/总行数
- *  @author     CaiWeiMou
+ *  @author     coolweedman
  *  @version    V1.00
  *  @date       2016-7-8
- *
- *  @note       Guangzhou ZLGMCU Technology Co., LTD
- *
- *  @par
- *      广州周立功单片机科技有限公司所提供的所有服务内容旨在协助客户加速产品的研发进度，在服务过程中所提供
- *  的任何程序、文档、测试结果、方案、支持等资料和信息，都仅供参考，客户有权不使用或自行参考修改，本公司不
- *  提供任何的完整性、可靠性等保证，若在客户使用过程中因任何原因造成的特别的、偶然的或间接的损失，本公司不
- *  承担任何责任。
- *                                                                        ——广州周立功单片机科技有限公司
  *********************************************************************************************************/
 
 #include "codestatistics.h"
@@ -23,8 +14,9 @@
 #include <QString>
 #include <QPair>
 #include <QDebug>
-
-
+#include "filecodestatthread.h"
+#include <QMetaType>
+#include <string.h>
 
 /**
  *  @fn     CCodeStatistics::CCodeStatistics(void)
@@ -34,7 +26,27 @@
 CCodeStatistics::CCodeStatistics(void)
 {
     mvecPairCodeStatResult = new QVector< QPair<QString, SCodeStatResultStru> >();
-    mpStrListFilter = new QStringList();
+
+    mpStrListFilter    = new QStringList();
+    mpListFileFullName = new QVector<QString>();
+    mpListFileName     = new QVector<QString>();
+
+    mpFileCodeStatHandler = new QVector<CFileCodeStatThread *>();
+    mpFileCodeStatHandler->push_back( new CFileCodeStatThread(0) );
+    mpFileCodeStatHandler->push_back( new CFileCodeStatThread(1) );
+
+    qRegisterMetaType<SCodeStatResultStru>("SCodeStatResultStru");
+
+
+    connect( mpFileCodeStatHandler->at(0),
+             SIGNAL(fileCodeDoneSig(int,QString,const SCodeStatResultStru *)),
+             this,
+             SLOT(codeStatOneFileDoneProc(int,QString,const SCodeStatResultStru *)) );
+    connect( mpFileCodeStatHandler->at(1),
+             SIGNAL(fileCodeDoneSig(int,QString,const SCodeStatResultStru *)),
+             this,
+             SLOT(codeStatOneFileDoneProc(int,QString,const SCodeStatResultStru *)) );
+
 }
 
 
@@ -50,6 +62,59 @@ CCodeStatistics::~CCodeStatistics(void)
 }
 
 
+void CCodeStatistics::codeStatFileGet(QString strDir)
+{
+    CDirScanStatistics *phDirScan = new CDirScanStatistics();
+
+    phDirScan->dirFileFilterSet( *mpStrListFilter );
+    phDirScan->dirFileFilterScan( strDir );
+
+    mpListFileFullName->clear();
+    phDirScan->dirFileFullNameGet( *mpListFileFullName );
+
+    mpListFileName->clear();
+    phDirScan->dirFileNameGet( *mpListFileName );
+
+    qDebug()<<"File "<<mpListFileName->length();
+}
+
+
+void CCodeStatistics::codeStatOneFileStart(int iId)
+{
+    if ( 0 == mpListFileFullName->length() ) {
+        qDebug()<<"codeStatOneFileStart 0";
+        return;
+    }
+
+    QString strFileName;
+    strFileName = mpListFileFullName->front();
+    mpListFileFullName->pop_front();
+
+    mpFileCodeStatHandler->at(iId)->fileCodeStatFileNameSet( strFileName );
+    mpFileCodeStatHandler->at(iId)->start();
+
+//    qDebug()<<"Start "<<iId;
+}
+
+
+void CCodeStatistics::codeStatOneFileDoneProc(int iId, QString strFileNmae, const SCodeStatResultStru *psCodeStatResult)
+{
+    QPair<QString, SCodeStatResultStru> pairFileStat;
+    pairFileStat.first  = strFileNmae;
+    memcpy( &pairFileStat.second, psCodeStatResult, sizeof(SCodeStatResultStru) );
+
+    mvecPairCodeStatResult->push_back( pairFileStat );
+
+//    qDebug()<<"end "<<iId;
+
+    if ( mpListFileFullName->length() > 0 ) {
+        emit codeStatProgressSig( mvecPairCodeStatResult->length(), mpListFileFullName->length() + mvecPairCodeStatResult->length() + 1 );
+        codeStatOneFileStart( iId );
+    } else {
+        emit codeStatDoneSig();
+    }
+}
+
 
 /**
  *  @fn     CCodeStatistics::codeStatProc(QString strDir)
@@ -59,32 +124,32 @@ CCodeStatistics::~CCodeStatistics(void)
  */
 void CCodeStatistics::codeStatProc(QString strDir)
 {
-    CDirScanStatistics *phDirScan = new CDirScanStatistics();
-    phDirScan->dirFileFilterSet( *mpStrListFilter );
-    phDirScan->dirFileFilterScan( strDir );
+    codeStatFileGet( strDir );
 
-    QVector<QString> listFileFullName;
-    phDirScan->dirFileScanedGet( listFileFullName );
-    QVector<QString> listFileName;
-    phDirScan->dirFileNameGet( listFileName );
+    mvecPairCodeStatResult->clear();
 
-    for ( int i=0; i<listFileFullName.length(); i++ ) {
-        CFileCodeStatistics fileCodeStat( listFileFullName.at(i) );
-        fileCodeStat.fcsFileScan();
+    for ( int i=0; i<mpFileCodeStatHandler->length(); i++ ) {
+        codeStatOneFileStart( i );
+    }
+#if 0
+    for ( int i=0; i<mpListFileFullName->length(); i++ ) {
+        CFileCodeStatistics fileCodeStat;
+        fileCodeStat.fcsFileScan( mpListFileFullName->at(i) );
 
         SCodeStatResultStru sStru;
         fileCodeStat.fcsResGet( sStru );
 
         QPair<QString, SCodeStatResultStru> pairFileStat;
-        pairFileStat.first  = listFileName.at(i);
+        pairFileStat.first  = mpListFileName->at(i);
         pairFileStat.second = sStru;
 
         mvecPairCodeStatResult->push_back( pairFileStat );
 
-        emit codeStatProgressSig( i, listFileFullName.length() );
+        emit codeStatProgressSig( i, mpListFileFullName->length() );
     }
 
     emit codeStatDoneSig();
+#endif
 }
 
 
@@ -129,6 +194,8 @@ void CCodeStatistics::codeStatFilterSet(QStringList &rListStrFilter)
  */
 void CCodeStatistics::codeStatDetailResGet(QVector<QPair<QString, SCodeStatResultStru> > &rVecPair)
 {
+    rVecPair.clear();
+
     for ( int i=0; i<mvecPairCodeStatResult->length(); i++ ) {
         rVecPair.push_back( mvecPairCodeStatResult->at(i) );
     }

@@ -76,11 +76,11 @@ struct SCodeStatResultStru {
  */
 class CFileCodeStatistics : public QObject {
 public:
-    CFileCodeStatistics(QString strFileName);       /**< 代码统计 构造函数 */
+    CFileCodeStatistics(void);                      /**< 代码统计 构造函数 */
    ~CFileCodeStatistics(void);                      /**< 代码统计 析构函数 */
 
 public:
-    void fcsFileScan(void);                         /**< 代码统计 文件扫描 */
+    void fcsFileScan(QString strFileName);          /**< 代码统计 文件扫描 */
     void fcsResGet(SCodeStatResultStru &sStru);     /**< 代码统计 结果获取 */
 
     static void fcsResPrint(const SCodeStatResultStru &sStru);   /**< 代码统计 结果打印 */
@@ -97,8 +97,7 @@ protected:
     void fcsFsmSlashOutProc(char cChr);             /**< 代码统计 块注释退出处理 */
 
 protected:
-    QFile                  *mpFile;                 /**< 代码统计 扫描文件 */
-    SCodeStatisticsStru    msCodeStat;              /**< 代码统计 统计结构体 */
+    SCodeStatisticsStru     msCodeStat;             /**< 代码统计 统计结构体 */
 };
 
 #endif // FILECODESTATISTICS

@@ -35,3 +35,4 @@ FORMS    += \
 INCLUDEPATH += ../Code/Comm
 INCLUDEPATH += ../Code/App
 INCLUDEPATH += ../Code/Ui
+INCLUDEPATH += ../Code/Thread

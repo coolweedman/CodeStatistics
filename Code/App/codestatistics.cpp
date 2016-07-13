@@ -60,8 +60,8 @@ void CCodeStatistics::codeStatProc(QString strDir)
     phDirScan->dirFileNameGet( listFileName );
 
     for ( int i=0; i<listFileFullName.length(); i++ ) {
-        CFileCodeStatistics fileCodeStat( listFileFullName.at(i) );
-        fileCodeStat.fcsFileScan();
+        CFileCodeStatistics fileCodeStat;
+        fileCodeStat.fcsFileScan( listFileFullName.at(i) );
 
         SCodeStatResultStru sStru;
         fileCodeStat.fcsResGet( sStru );

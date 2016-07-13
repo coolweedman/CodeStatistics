@@ -41,17 +41,17 @@
       </column>
       <column>
        <property name="text">
-        <string>有效代码行数</string>
+        <string>有效代码行</string>
        </property>
       </column>
       <column>
        <property name="text">
-        <string>注释代码行数</string>
+        <string>注释行</string>
        </property>
       </column>
       <column>
        <property name="text">
-        <string>空行数</string>
+        <string>空行</string>
        </property>
       </column>
       <column>

@@ -18,11 +18,21 @@
 #include <QProgressBar>
 #include "filefilterwindow.h"
 
+
 /**********************************************************************************************************
   宏定义
 **********************************************************************************************************/
 
 #define CODE_STAT_VERSION           ( 102 )
+
+
+const static QString GstrTableWidgetTitle[] = {
+    "文件",
+    "有效代码行",
+    "注释行",
+    "空行",
+    "总行数",
+};
 
 
 
@@ -115,20 +125,19 @@ void CodeStatisticsWindow::codeStatStatusBarUpdate(void)
  */
 void CodeStatisticsWindow::codeStatTableWidgetUpdate(void)
 {
-    while ( ui->tableWidget->rowCount() > 0 ) {
-        delete ui->tableWidget->itemAt( 0, 0 );
-        delete ui->tableWidget->itemAt( 0, 1 );
-        delete ui->tableWidget->itemAt( 0, 2 );
-        delete ui->tableWidget->itemAt( 0, 3 );
-        delete ui->tableWidget->itemAt( 0, 4 );
+    ui->tableWidget->clear();
 
-        ui->tableWidget->removeRow( 0 );
+    QStringList strTitle;
+
+    for ( size_t i=0; i<sizeof(GstrTableWidgetTitle)/sizeof(GstrTableWidgetTitle[0]); i++ ) {
+        strTitle<<GstrTableWidgetTitle[i];
     }
+    ui->tableWidget->setHorizontalHeaderLabels( strTitle );
 
     ui->tableWidget->setRowCount( msVecCodeStatDetailResult.length() );
     for ( int i=0; i<msVecCodeStatDetailResult.length(); i++ ) {
-        ui->tableWidget->setItem( i, 0, new QTableWidgetItem(msVecCodeStatDetailResult.at(i).first) );
-        ui->tableWidget->setItem( i, 1, new QTableWidgetItem(QString::number(msVecCodeStatDetailResult.at(i).second.uiEffeCodeLines) ) );
+        ui->tableWidget->setItem( i, 0, new QTableWidgetItem( msVecCodeStatDetailResult.at(i).first) );
+        ui->tableWidget->setItem( i, 1, new QTableWidgetItem( QString::number(msVecCodeStatDetailResult.at(i).second.uiEffeCodeLines) ) );
         ui->tableWidget->setItem( i, 2, new QTableWidgetItem( QString::number(msVecCodeStatDetailResult.at(i).second.uiCommentCodeLines) ) );
         ui->tableWidget->setItem( i, 3, new QTableWidgetItem( QString::number(msVecCodeStatDetailResult.at(i).second.uiEmptyLineNum) ) );
         ui->tableWidget->setItem( i, 4, new QTableWidgetItem( QString::number(msVecCodeStatDetailResult.at(i).second.uiTotalLineNum) ) );

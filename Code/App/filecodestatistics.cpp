@@ -17,24 +17,12 @@
 
 
 /**
- *  @fn     CFileCodeStatistics::CFileCodeStatistics(QString strFileName)
+ *  @fn     CFileCodeStatistics::CFileCodeStatistics(void)
  *  @brief  代码统计 构造函数
- *  @param  [in]    strFileName 文件名
  *  @return 无
  */
-CFileCodeStatistics::CFileCodeStatistics(QString strFileName)
+CFileCodeStatistics::CFileCodeStatistics(void)
 {
-    mpFile = new QFile( strFileName );
-
-    if ( NULL == mpFile ) {
-        return;
-
-    }
-    if ( !mpFile->open(QIODevice::ReadOnly | QIODevice::Text) ) {
-        return;
-    }
-
-    fcsStruInit();
 }
 
 
@@ -46,10 +34,6 @@ CFileCodeStatistics::CFileCodeStatistics(QString strFileName)
  */
 CFileCodeStatistics::~CFileCodeStatistics(void)
 {
-    if ( NULL != mpFile ) {
-        mpFile->close();
-        delete mpFile;
-    }
 }
 
 
@@ -57,11 +41,19 @@ CFileCodeStatistics::~CFileCodeStatistics(void)
 /**
  *  @fn     CFileCodeStatistics::fcsFileScan(void)
  *  @brief  代码统计 文件扫描
+ *  @param  strFileName 文件名
  *  @return 无
  */
-void CFileCodeStatistics::fcsFileScan(void)
+void CFileCodeStatistics::fcsFileScan(QString strFileName)
 {
-    QTextStream textStream( mpFile );
+    fcsStruInit();
+
+    QFile file( strFileName );
+    if ( !file.open(QIODevice::ReadOnly | QIODevice::Text) ) {
+        return;
+    }
+
+    QTextStream textStream( &file );
 
     while ( !textStream.atEnd() ) {
         QString strLine = textStream.readLine();

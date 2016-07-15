@@ -169,6 +169,9 @@ void CodeStatisticsWindow::codeStatProgressUpdate(uint32_t ulCur, uint32_t ulTot
 
 void CodeStatisticsWindow::codeStatProgressDone(void)
 {
+    mpLabelTotalTime->setText( "Time(s): " + QString::number( mphTime->elapsed()/1000.0, 'f', 3) );
+    delete mphTime;
+
     mpProgressBar->setVisible( false );
 
     mphCodeStat->codeStatResGet( msCodeStatResult );
@@ -178,6 +181,8 @@ void CodeStatisticsWindow::codeStatProgressDone(void)
 
     codeStatTableWidgetUpdate();
     codeStatStatusBarUpdate();
+
+    ui->pushButtonOk->setEnabled( true );
 }
 
 
@@ -202,6 +207,11 @@ void CodeStatisticsWindow::on_pushButtonLookFor_clicked()
  */
 void CodeStatisticsWindow::on_pushButtonOk_clicked()
 {
+    mphTime = new QTime();
+    mphTime->start();
+
+    ui->pushButtonOk->setEnabled( false );
+
     QStringList listStrFilter;
 
     mphFileFilterWindow->ffwFilterGet( listStrFilter );
@@ -209,7 +219,6 @@ void CodeStatisticsWindow::on_pushButtonOk_clicked()
 
     //////////
     mphCodeStat->codeStatProc( ui->lineEditDir->text() );
-
 }
 
 

@@ -23,6 +23,7 @@ class CodeStatisticsWindow;
   类型声明
 **********************************************************************************************************/
 
+class QTime;
 class QLabel;
 class QProgressBar;
 class FileFilterWindow;
@@ -79,6 +80,7 @@ private:
 
     FileFilterWindow   *mphFileFilterWindow;
     CCodeStatistics    *mphCodeStat;
+    QTime              *mphTime;
 };
 
 #endif // CODESTATISTICSWINDOW_H

@@ -60,6 +60,7 @@ FileFilterWindow::~FileFilterWindow()
 {
     ffwSave();
 
+    delete mpVecStrFileFilter;
     delete ui;
 }
 

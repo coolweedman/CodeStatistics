@@ -76,6 +76,8 @@ CodeStatisticsWindow::CodeStatisticsWindow(QWidget *parent) :
  */
 CodeStatisticsWindow::~CodeStatisticsWindow()
 {
+    delete mphFileFilterWindow;
+    delete mphCodeStat;
     delete ui;
 }
 

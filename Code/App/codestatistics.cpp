@@ -19,6 +19,7 @@
 #include <string.h>
 #include <QMutexLocker>
 #include <QMutex>
+#include "cpuinfo.h"
 
 /**
  *  @fn     CCodeStatistics::CCodeStatistics(void)
@@ -38,16 +39,6 @@ CCodeStatistics::CCodeStatistics(void)
     mpFileCodeStatHandler = new QVector<CFileCodeStatThread *>();
 
     codeStatThreadCreate();
-
-    connect( mpFileCodeStatHandler->at(0),
-             SIGNAL(fileCodeDoneSig(int,QString,const SCodeStatResultStru *)),
-             this,
-             SLOT(codeStatOneFileDoneProc(int,QString,const SCodeStatResultStru *)) );
-    connect( mpFileCodeStatHandler->at(1),
-             SIGNAL(fileCodeDoneSig(int,QString,const SCodeStatResultStru *)),
-             this,
-             SLOT(codeStatOneFileDoneProc(int,QString,const SCodeStatResultStru *)) );
-
 }
 
 
@@ -59,7 +50,14 @@ CCodeStatistics::CCodeStatistics(void)
  */
 CCodeStatistics::~CCodeStatistics(void)
 {
+    delete mvecPairCodeStatResult;
+    delete mpStrListFilter;
+    delete mpListFileFullName;
+    delete mpListFileName;
 
+    for ( int i=0; i<mpFileCodeStatHandler->length(); i++ ) {
+        delete mpFileCodeStatHandler->at(i);
+    }
 }
 
 
@@ -116,8 +114,15 @@ void CCodeStatistics::codeStatThreadCreate(void)
 {
     qRegisterMetaType<SCodeStatResultStru>("SCodeStatResultStru");
 
-    for ( int i=0; i<2; i++ ) {
+    int iProcessorNum = cpuProcessorNumGet();
+
+    for ( int i=0; i<iProcessorNum; i++ ) {
         mpFileCodeStatHandler->push_back( new CFileCodeStatThread(i) );
+
+        connect( mpFileCodeStatHandler->at(i),
+                 SIGNAL(fileCodeDoneSig(int,QString,const SCodeStatResultStru *)),
+                 this,
+                 SLOT(codeStatOneFileDoneProc(int,QString,const SCodeStatResultStru *)) );
     }
 }
 

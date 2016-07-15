@@ -3,7 +3,7 @@
 #include <QStringList>
 #include <QDebug>
 #include <QCoreApplication>
-#include <QMutexLocker>"
+#include <QMutexLocker>
 
 
 CFileCodeStatThread::CFileCodeStatThread(int iId)
@@ -16,7 +16,7 @@ CFileCodeStatThread::CFileCodeStatThread(int iId)
 
 CFileCodeStatThread::~CFileCodeStatThread(void)
 {
-
+    delete mphFileCodeStat;
 }
 
 void CFileCodeStatThread::fileCodeStatFileNameSet(QString strFullFileName)

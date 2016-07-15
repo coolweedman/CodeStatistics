@@ -6,6 +6,7 @@ INPUT(
 ./release\codestatisticswindow.o
 ./release\filefilterwindow.o
 ./release\filecodestatthread.o
+./release\cpuinfo.o
 ./release\moc_dirscanstatistics.o
 ./release\moc_codestatistics.o
 ./release\moc_codestatisticswindow.o

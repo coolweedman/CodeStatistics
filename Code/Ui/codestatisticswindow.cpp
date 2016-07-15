@@ -25,7 +25,7 @@
   宏定义
 **********************************************************************************************************/
 
-#define CODE_STAT_VERSION           ( 102 )
+#define CODE_STAT_VERSION           ( 103 )
 
 
 const static QString GstrTableWidgetTitle[] = {
@@ -76,6 +76,8 @@ CodeStatisticsWindow::CodeStatisticsWindow(QWidget *parent) :
  */
 CodeStatisticsWindow::~CodeStatisticsWindow()
 {
+    delete mphFileFilterWindow;
+    delete mphCodeStat;
     delete ui;
 }
 

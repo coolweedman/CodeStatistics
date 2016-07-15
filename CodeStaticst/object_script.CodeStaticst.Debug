@@ -6,6 +6,7 @@ INPUT(
 ./debug\codestatisticswindow.o
 ./debug\filefilterwindow.o
 ./debug\filecodestatthread.o
+./debug\cpuinfo.o
 ./debug\moc_dirscanstatistics.o
 ./debug\moc_codestatistics.o
 ./debug\moc_codestatisticswindow.o

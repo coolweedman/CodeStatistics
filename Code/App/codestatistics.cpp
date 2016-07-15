@@ -17,6 +17,8 @@
 #include "filecodestatthread.h"
 #include <QMetaType>
 #include <string.h>
+#include <QMutexLocker>
+#include <QMutex>
 
 /**
  *  @fn     CCodeStatistics::CCodeStatistics(void)
@@ -31,12 +33,11 @@ CCodeStatistics::CCodeStatistics(void)
     mpListFileFullName = new QVector<QString>();
     mpListFileName     = new QVector<QString>();
 
+    mbFinishFlag = true;
+
     mpFileCodeStatHandler = new QVector<CFileCodeStatThread *>();
-    mpFileCodeStatHandler->push_back( new CFileCodeStatThread(0) );
-    mpFileCodeStatHandler->push_back( new CFileCodeStatThread(1) );
 
-    qRegisterMetaType<SCodeStatResultStru>("SCodeStatResultStru");
-
+    codeStatThreadCreate();
 
     connect( mpFileCodeStatHandler->at(0),
              SIGNAL(fileCodeDoneSig(int,QString,const SCodeStatResultStru *)),
@@ -71,6 +72,7 @@ void CCodeStatistics::codeStatFileGet(QString strDir)
 
     mpListFileFullName->clear();
     phDirScan->dirFileFullNameGet( *mpListFileFullName );
+    mulDoneCnt = mpListFileFullName->length();
 
     mpListFileName->clear();
     phDirScan->dirFileNameGet( *mpListFileName );
@@ -81,19 +83,12 @@ void CCodeStatistics::codeStatFileGet(QString strDir)
 
 void CCodeStatistics::codeStatOneFileStart(int iId)
 {
-    if ( 0 == mpListFileFullName->length() ) {
-        qDebug()<<"codeStatOneFileStart 0";
-        return;
-    }
-
     QString strFileName;
     strFileName = mpListFileFullName->front();
     mpListFileFullName->pop_front();
 
     mpFileCodeStatHandler->at(iId)->fileCodeStatFileNameSet( strFileName );
     mpFileCodeStatHandler->at(iId)->start();
-
-//    qDebug()<<"Start "<<iId;
 }
 
 
@@ -104,14 +99,32 @@ void CCodeStatistics::codeStatOneFileDoneProc(int iId, QString strFileNmae, cons
     memcpy( &pairFileStat.second, psCodeStatResult, sizeof(SCodeStatResultStru) );
 
     mvecPairCodeStatResult->push_back( pairFileStat );
-
-//    qDebug()<<"end "<<iId;
+    mulDoneCnt--;
 
     if ( mpListFileFullName->length() > 0 ) {
         emit codeStatProgressSig( mvecPairCodeStatResult->length(), mpListFileFullName->length() + mvecPairCodeStatResult->length() + 1 );
         codeStatOneFileStart( iId );
-    } else {
+    } else if ( 0 == mulDoneCnt ) {
+        codeStatThreadStop();
         emit codeStatDoneSig();
+    }
+}
+
+
+
+void CCodeStatistics::codeStatThreadCreate(void)
+{
+    qRegisterMetaType<SCodeStatResultStru>("SCodeStatResultStru");
+
+    for ( int i=0; i<2; i++ ) {
+        mpFileCodeStatHandler->push_back( new CFileCodeStatThread(i) );
+    }
+}
+
+void CCodeStatistics::codeStatThreadStop(void)
+{
+    for ( int i=0; i<mpFileCodeStatHandler->length() ; i++ ) {
+        mpFileCodeStatHandler->at(i)->terminate();
     }
 }
 
@@ -124,6 +137,9 @@ void CCodeStatistics::codeStatOneFileDoneProc(int iId, QString strFileNmae, cons
  */
 void CCodeStatistics::codeStatProc(QString strDir)
 {
+#if 1
+    mbFinishFlag = false;
+
     codeStatFileGet( strDir );
 
     mvecPairCodeStatResult->clear();
@@ -131,7 +147,7 @@ void CCodeStatistics::codeStatProc(QString strDir)
     for ( int i=0; i<mpFileCodeStatHandler->length(); i++ ) {
         codeStatOneFileStart( i );
     }
-#if 0
+#else
     for ( int i=0; i<mpListFileFullName->length(); i++ ) {
         CFileCodeStatistics fileCodeStat;
         fileCodeStat.fcsFileScan( mpListFileFullName->at(i) );

@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QThread>
 #include "filecodestatistics.h"
-
+#include <QMutex>
 
 class CFileCodeStatistics;
 
@@ -25,12 +25,17 @@ signals:
 protected:
     void run(void);
 
+public:
+    bool                    bFinishFlag;
+
 private:
     int                     miThreadId;
     CFileCodeStatistics    *mphFileCodeStat;
     QString                 mstrFullFileName;
     QString                 mstrFileName;
     SCodeStatResultStru     msCodeStatResult;
+
+    QMutex                  mMutex;
 };
 
 #endif // FILECODESTATTHREAD

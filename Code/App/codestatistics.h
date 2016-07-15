@@ -18,6 +18,7 @@
 
 
 class CFileCodeStatThread;
+class QMutex;
 
 /**********************************************************************************************************
   类型定义
@@ -49,6 +50,9 @@ public:
     void codeStatFilterSet(QStringList &rListStrFilter);
     void codeStatDetailResGet(QVector< QPair<QString, SCodeStatResultStru> > &rVecPair);    /**< 目录代码递归统计 详细结果获取 */
 
+    void codeStatThreadCreate(void);
+    void codeStatThreadStop(void);
+
     static void codeStatResPrint(SCodeStatResultStru &sResStru);        /**< 目录代码递归统计 结果打印 */
     static void codeStatDetailResPrint(QVector< QPair<QString, SCodeStatResultStru> > &rVecPair);   /**< 目录代码递归统计 详细结果打印 */
 
@@ -59,6 +63,9 @@ private:
     QStringList        *mpStrListFilter;
     QVector<QString>   *mpListFileFullName;
     QVector<QString>   *mpListFileName;
+
+    bool                mbFinishFlag;
+    uint32_t            mulDoneCnt;
 };
 
 #endif // CODESTATISTICS

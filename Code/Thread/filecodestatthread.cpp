@@ -2,11 +2,14 @@
 #include "filecodestatistics.h"
 #include <QStringList>
 #include <QDebug>
+#include <QCoreApplication>
+#include <QMutexLocker>"
 
 
 CFileCodeStatThread::CFileCodeStatThread(int iId)
 {
-    miThreadId = iId;
+    miThreadId  = iId;
+    bFinishFlag = true;
 
     mphFileCodeStat = new CFileCodeStatistics();
 }
@@ -18,6 +21,9 @@ CFileCodeStatThread::~CFileCodeStatThread(void)
 
 void CFileCodeStatThread::fileCodeStatFileNameSet(QString strFullFileName)
 {
+    QMutexLocker lock(&mMutex);
+
+    bFinishFlag      = false;
     mstrFullFileName = strFullFileName;
 
     QStringList strList = strFullFileName.split( "/" );
@@ -26,12 +32,18 @@ void CFileCodeStatThread::fileCodeStatFileNameSet(QString strFullFileName)
 
 void CFileCodeStatThread::run(void)
 {
-    qDebug()<<"run "<<miThreadId;
+    while (1) {
+        if ( bFinishFlag ) {
+            QCoreApplication::processEvents();
+        } else {
+            QMutexLocker lock(&mMutex);
 
-    mphFileCodeStat->fcsFileScan( mstrFullFileName );
-    mphFileCodeStat->fcsResGet( msCodeStatResult );
+            mphFileCodeStat->fcsFileScan( mstrFullFileName );
+            mphFileCodeStat->fcsResGet( msCodeStatResult );
 
-    emit fileCodeDoneSig( miThreadId, mstrFileName, &msCodeStatResult );
+            bFinishFlag = true;
 
-    qDebug()<<"end run "<<miThreadId;
+            emit fileCodeDoneSig( miThreadId, mstrFileName, &msCodeStatResult );
+        }
+    }
 }

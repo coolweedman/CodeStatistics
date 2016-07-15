@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     ../Code/App/codestatistics.cpp \
     ../Code/Ui/codestatisticswindow.cpp \
     ../Code/Ui/filefilterwindow.cpp \
-    ../Code/Thread/filecodestatthread.cpp
+    ../Code/Thread/filecodestatthread.cpp \
+    ../Code/Thread/cpuinfo.cpp
 
 HEADERS  += \
     ../Code/Comm/typedefs.h \
@@ -28,7 +29,8 @@ HEADERS  += \
     ../Code/App/codestatistics.h \
     ../Code/Ui/codestatisticswindow.h \
     ../Code/Ui/filefilterwindow.h \
-    ../Code/Thread/filecodestatthread.h
+    ../Code/Thread/filecodestatthread.h \
+    ../Code/Thread/cpuinfo.h
 
 FORMS    += \
     ../Code/Ui/codestatisticswindow.ui \

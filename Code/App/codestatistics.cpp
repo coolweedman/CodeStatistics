@@ -19,6 +19,7 @@
 #include <string.h>
 #include <QMutexLocker>
 #include <QMutex>
+#include "cpuinfo.h"
 
 /**
  *  @fn     CCodeStatistics::CCodeStatistics(void)
@@ -113,7 +114,9 @@ void CCodeStatistics::codeStatThreadCreate(void)
 {
     qRegisterMetaType<SCodeStatResultStru>("SCodeStatResultStru");
 
-    for ( int i=0; i<2; i++ ) {
+    int iProcessorNum = cpuProcessorNumGet();
+
+    for ( int i=0; i<iProcessorNum; i++ ) {
         mpFileCodeStatHandler->push_back( new CFileCodeStatThread(i) );
 
         connect( mpFileCodeStatHandler->at(i),

@@ -19,7 +19,7 @@
 #include "filefilterwindow.h"
 #include <QTime>
 #include <QDebug>
-
+#include <QMessageBox>
 
 /**********************************************************************************************************
   宏定义
@@ -62,9 +62,9 @@ CodeStatisticsWindow::CodeStatisticsWindow(QWidget *parent) :
              this,
              SLOT(codeStatProgressUpdate(uint32_t,uint32_t)) );
     connect( mphCodeStat,
-             SIGNAL(codeStatDoneSig()),
+             SIGNAL(codeStatDoneSig(bool)),
              this,
-             SLOT(codeStatProgressDone()) );
+             SLOT(codeStatProgressDone(bool)) );
 }
 
 
@@ -162,6 +162,14 @@ void CodeStatisticsWindow::codeStatTableWidgetUpdate(void)
 }
 
 
+
+/**
+ *  @fn     CodeStatisticsWindow::codeStatProgressUpdate(uint32_t ulCur, uint32_t ulTotal)
+ *  @brief  代码统计窗口 进度更新
+ *  @param  [in] ulCur      已扫描个数
+ *  @param  [in] ulTotal    总个数
+ *  @return 无
+ */
 void CodeStatisticsWindow::codeStatProgressUpdate(uint32_t ulCur, uint32_t ulTotal)
 {
     mpProgressBar->setVisible( true );
@@ -169,7 +177,14 @@ void CodeStatisticsWindow::codeStatProgressUpdate(uint32_t ulCur, uint32_t ulTot
 }
 
 
-void CodeStatisticsWindow::codeStatProgressDone(void)
+
+/**
+ *  @fn     CodeStatisticsWindow::codeStatProgressDone(bool bStat)
+ *  @brief  代码统计窗口 进度更新
+ *  @param  [in] bStat  结束状态
+ *  @return 无
+ */
+void CodeStatisticsWindow::codeStatProgressDone(bool bStat)
 {
     mpLabelTotalTime->setText( "Time(s): " + QString::number( mphTime->elapsed()/1000.0, 'f', 3) );
     delete mphTime;
@@ -185,6 +200,10 @@ void CodeStatisticsWindow::codeStatProgressDone(void)
     codeStatStatusBarUpdate();
 
     ui->pushButtonOk->setEnabled( true );
+
+    if ( !bStat ) {
+        QMessageBox::information( NULL, "代码扫描", "扫描目录失败", QMessageBox::Cancel );
+    }
 }
 
 
@@ -219,7 +238,6 @@ void CodeStatisticsWindow::on_pushButtonOk_clicked()
     mphFileFilterWindow->ffwFilterGet( listStrFilter );
     mphCodeStat->codeStatFilterSet( listStrFilter );
 
-    //////////
     mphCodeStat->codeStatProc( ui->lineEditDir->text() );
 }
 

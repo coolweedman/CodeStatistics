@@ -61,6 +61,13 @@ CCodeStatistics::~CCodeStatistics(void)
 }
 
 
+
+/**
+ *  @fn     CCodeStatistics::codeStatFileGet(QString strDir)
+ *  @brief  目录代码递归统计 根据目录读取文件
+ *  @param  [in] strDir 目录
+ *  @return 无
+ */
 void CCodeStatistics::codeStatFileGet(QString strDir)
 {
     CDirScanStatistics *phDirScan = new CDirScanStatistics();
@@ -79,6 +86,13 @@ void CCodeStatistics::codeStatFileGet(QString strDir)
 }
 
 
+
+/**
+ *  @fn     CCodeStatistics::codeStatOneFileStart(int iId)
+ *  @brief  目录代码递归统计 启动线程扫描一个文件
+ *  @param  [in] iId    线程ID
+ *  @return 无
+ */
 void CCodeStatistics::codeStatOneFileStart(int iId)
 {
     QString strFileName;
@@ -90,6 +104,15 @@ void CCodeStatistics::codeStatOneFileStart(int iId)
 }
 
 
+
+/**
+ *  @fn     CCodeStatistics::codeStatOneFileDoneProc(int iId, QString strFileNmae, const SCodeStatResultStru *psCodeStatResult)
+ *  @brief  目录代码递归统计 扫描完成处理
+ *  @param  [in] iId                    线程ID
+ *  @param  [in] strFileNmae            文件名
+ *  @param  [in] SCodeStatResultStru    计算结果
+ *  @return 无
+ */
 void CCodeStatistics::codeStatOneFileDoneProc(int iId, QString strFileNmae, const SCodeStatResultStru *psCodeStatResult)
 {
     QPair<QString, SCodeStatResultStru> pairFileStat;
@@ -110,6 +133,11 @@ void CCodeStatistics::codeStatOneFileDoneProc(int iId, QString strFileNmae, cons
 
 
 
+/**
+ *  @fn     CCodeStatistics::codeStatThreadCreate(void)
+ *  @brief  目录代码递归统计 创建线程
+ *  @return 无
+ */
 void CCodeStatistics::codeStatThreadCreate(void)
 {
     qRegisterMetaType<SCodeStatResultStru>("SCodeStatResultStru");
@@ -126,12 +154,19 @@ void CCodeStatistics::codeStatThreadCreate(void)
     }
 }
 
+
+/**
+ *  @fn     CCodeStatistics::codeStatThreadStop(void)
+ *  @brief  目录代码递归统计 关闭线程
+ *  @return 无
+ */
 void CCodeStatistics::codeStatThreadStop(void)
 {
     for ( int i=0; i<mpFileCodeStatHandler->length() ; i++ ) {
         mpFileCodeStatHandler->at(i)->terminate();
     }
 }
+
 
 
 /**
@@ -142,35 +177,19 @@ void CCodeStatistics::codeStatThreadStop(void)
  */
 void CCodeStatistics::codeStatProc(QString strDir)
 {
-#if 1
     mbFinishFlag = false;
 
-    codeStatFileGet( strDir );
-
     mvecPairCodeStatResult->clear();
+
+    codeStatFileGet( strDir );
+    if ( 0 == mpListFileName->length() ) {
+        emit codeStatDoneSig( false );
+        return;
+    }
 
     for ( int i=0; i<mpFileCodeStatHandler->length(); i++ ) {
         codeStatOneFileStart( i );
     }
-#else
-    for ( int i=0; i<mpListFileFullName->length(); i++ ) {
-        CFileCodeStatistics fileCodeStat;
-        fileCodeStat.fcsFileScan( mpListFileFullName->at(i) );
-
-        SCodeStatResultStru sStru;
-        fileCodeStat.fcsResGet( sStru );
-
-        QPair<QString, SCodeStatResultStru> pairFileStat;
-        pairFileStat.first  = mpListFileName->at(i);
-        pairFileStat.second = sStru;
-
-        mvecPairCodeStatResult->push_back( pairFileStat );
-
-        emit codeStatProgressSig( i, mpListFileFullName->length() );
-    }
-
-    emit codeStatDoneSig();
-#endif
 }
 
 
@@ -197,6 +216,12 @@ void CCodeStatistics::codeStatResGet(SCodeStatResultStru &sResStru)
 }
 
 
+/**
+ *  @fn     CCodeStatistics::codeStatFilterSet(QStringList &rListStrFilter)
+ *  @brief  目录代码递归统计 读取过滤器
+ *  @param  [out] rListStrFilter  过滤器
+ *  @return 无
+ */
 void CCodeStatistics::codeStatFilterSet(QStringList &rListStrFilter)
 {
     mpStrListFilter->clear();
@@ -205,6 +230,7 @@ void CCodeStatistics::codeStatFilterSet(QStringList &rListStrFilter)
         mpStrListFilter->push_back( rListStrFilter.at(i) );
     }
 }
+
 
 
 /**

@@ -53,8 +53,8 @@ private:
     void codeStatTableWidgetUpdate(void);   /**< 代码统计窗口 详细信息更新 */
 
 private slots:
-    void codeStatProgressUpdate(uint32_t ulCur, uint32_t ulTotal);
-    void codeStatProgressDone(void);
+    void codeStatProgressUpdate(uint32_t ulCur, uint32_t ulTotal);      /**< 代码统计窗口 进度更新 */
+    void codeStatProgressDone(bool bStat);                              /**< 代码统计窗口 进度完成 */
 
 private slots:
     void on_pushButtonLookFor_clicked();

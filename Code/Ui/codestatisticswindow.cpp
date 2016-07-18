@@ -162,6 +162,14 @@ void CodeStatisticsWindow::codeStatTableWidgetUpdate(void)
 }
 
 
+
+/**
+ *  @fn     CodeStatisticsWindow::codeStatProgressUpdate(uint32_t ulCur, uint32_t ulTotal)
+ *  @brief  代码统计窗口 进度更新
+ *  @param  [in] ulCur      已扫描个数
+ *  @param  [in] ulTotal    总个数
+ *  @return 无
+ */
 void CodeStatisticsWindow::codeStatProgressUpdate(uint32_t ulCur, uint32_t ulTotal)
 {
     mpProgressBar->setVisible( true );
@@ -169,6 +177,13 @@ void CodeStatisticsWindow::codeStatProgressUpdate(uint32_t ulCur, uint32_t ulTot
 }
 
 
+
+/**
+ *  @fn     CodeStatisticsWindow::codeStatProgressDone(bool bStat)
+ *  @brief  代码统计窗口 进度更新
+ *  @param  [in] bStat  结束状态
+ *  @return 无
+ */
 void CodeStatisticsWindow::codeStatProgressDone(bool bStat)
 {
     mpLabelTotalTime->setText( "Time(s): " + QString::number( mphTime->elapsed()/1000.0, 'f', 3) );

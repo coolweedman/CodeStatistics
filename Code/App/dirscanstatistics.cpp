@@ -41,6 +41,13 @@ CDirScanStatistics::~CDirScanStatistics(void)
 }
 
 
+
+/**
+ *  @fn     CDirScanStatistics::dirFileFilterSet(const QStringList &rFilter)
+ *  @brief  文件目录扫描过滤 设置过滤器
+ *  @param  [in] rFilter    过滤器
+ *  @return 无
+ */
 void CDirScanStatistics::dirFileFilterSet(const QStringList &rFilter)
 {
     for ( int i=0; i<rFilter.length(); i++ ) {
@@ -48,6 +55,14 @@ void CDirScanStatistics::dirFileFilterSet(const QStringList &rFilter)
     }
 }
 
+
+
+/**
+ *  @fn     CDirScanStatistics::dirFileFilterGet(const QStringList &rFilter)
+ *  @brief  文件目录扫描过滤 读取过滤器
+ *  @param  [out] rFilter    过滤器
+ *  @return 无
+ */
 void CDirScanStatistics::dirFileFilterGet(QStringList &rFilter)
 {
     for ( int i=0; i<mpListFileFilter->length(); i++ ) {
@@ -88,8 +103,8 @@ void CDirScanStatistics::dirFileFilterScan(QString strPath)
 
 /**
  *  @fn     CDirScanStatistics::dirFileFullNameGet(QVector<QString> &rVecStrFileName)
- *  @brief  文件目录扫描过滤 结果获取
- *  @param  [out] rVecStrFileName   文件名
+ *  @brief  文件目录扫描过滤 全名结果获取
+ *  @param  [out] rVecStrFileName   全名文件名
  *  @return 无
  */
 void CDirScanStatistics::dirFileFullNameGet(QVector<QString> &rVecStrFileName)
@@ -100,12 +115,20 @@ void CDirScanStatistics::dirFileFullNameGet(QVector<QString> &rVecStrFileName)
 }
 
 
+
+/**
+ *  @fn     CDirScanStatistics::dirFileFullNameGet(QVector<QString> &rVecStrFileName)
+ *  @brief  文件目录扫描过滤 结果获取
+ *  @param  [out] rVecStrFileName   文件名
+ *  @return 无
+ */
 void CDirScanStatistics::dirFileNameGet(QVector<QString> &rVecStrFileName)
 {
     for ( int i=0; i<mpvecStrFileName->length(); i++ ) {
         rVecStrFileName.push_back( mpvecStrFileName->at(i) );
     }
 }
+
 
 
 /**

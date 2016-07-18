@@ -142,35 +142,19 @@ void CCodeStatistics::codeStatThreadStop(void)
  */
 void CCodeStatistics::codeStatProc(QString strDir)
 {
-#if 1
     mbFinishFlag = false;
 
-    codeStatFileGet( strDir );
-
     mvecPairCodeStatResult->clear();
+
+    codeStatFileGet( strDir );
+    if ( 0 == mpListFileName->length() ) {
+        emit codeStatDoneSig( false );
+        return;
+    }
 
     for ( int i=0; i<mpFileCodeStatHandler->length(); i++ ) {
         codeStatOneFileStart( i );
     }
-#else
-    for ( int i=0; i<mpListFileFullName->length(); i++ ) {
-        CFileCodeStatistics fileCodeStat;
-        fileCodeStat.fcsFileScan( mpListFileFullName->at(i) );
-
-        SCodeStatResultStru sStru;
-        fileCodeStat.fcsResGet( sStru );
-
-        QPair<QString, SCodeStatResultStru> pairFileStat;
-        pairFileStat.first  = mpListFileName->at(i);
-        pairFileStat.second = sStru;
-
-        mvecPairCodeStatResult->push_back( pairFileStat );
-
-        emit codeStatProgressSig( i, mpListFileFullName->length() );
-    }
-
-    emit codeStatDoneSig();
-#endif
 }
 
 

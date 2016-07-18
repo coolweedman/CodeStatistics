@@ -19,7 +19,7 @@
 #include "filefilterwindow.h"
 #include <QTime>
 #include <QDebug>
-
+#include <QMessageBox>
 
 /**********************************************************************************************************
   宏定义
@@ -62,9 +62,9 @@ CodeStatisticsWindow::CodeStatisticsWindow(QWidget *parent) :
              this,
              SLOT(codeStatProgressUpdate(uint32_t,uint32_t)) );
     connect( mphCodeStat,
-             SIGNAL(codeStatDoneSig()),
+             SIGNAL(codeStatDoneSig(bool)),
              this,
-             SLOT(codeStatProgressDone()) );
+             SLOT(codeStatProgressDone(bool)) );
 }
 
 
@@ -169,7 +169,7 @@ void CodeStatisticsWindow::codeStatProgressUpdate(uint32_t ulCur, uint32_t ulTot
 }
 
 
-void CodeStatisticsWindow::codeStatProgressDone(void)
+void CodeStatisticsWindow::codeStatProgressDone(bool bStat)
 {
     mpLabelTotalTime->setText( "Time(s): " + QString::number( mphTime->elapsed()/1000.0, 'f', 3) );
     delete mphTime;
@@ -185,6 +185,10 @@ void CodeStatisticsWindow::codeStatProgressDone(void)
     codeStatStatusBarUpdate();
 
     ui->pushButtonOk->setEnabled( true );
+
+    if ( !bStat ) {
+        QMessageBox::information( NULL, "代码扫描", "扫描目录失败", QMessageBox::Cancel );
+    }
 }
 
 
@@ -219,7 +223,6 @@ void CodeStatisticsWindow::on_pushButtonOk_clicked()
     mphFileFilterWindow->ffwFilterGet( listStrFilter );
     mphCodeStat->codeStatFilterSet( listStrFilter );
 
-    //////////
     mphCodeStat->codeStatProc( ui->lineEditDir->text() );
 }
 

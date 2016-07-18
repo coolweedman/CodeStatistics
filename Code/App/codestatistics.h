@@ -37,7 +37,7 @@ public:
 
 signals:
     void codeStatProgressSig(uint32_t ulCur, uint32_t ulTotal);
-    void codeStatDoneSig(void);
+    void codeStatDoneSig(bool bStat = true);
 
 public slots:
     void codeStatOneFileStart(int iId);

@@ -54,7 +54,7 @@ private:
 
 private slots:
     void codeStatProgressUpdate(uint32_t ulCur, uint32_t ulTotal);
-    void codeStatProgressDone(void);
+    void codeStatProgressDone(bool bStat);
 
 private slots:
     void on_pushButtonLookFor_clicked();

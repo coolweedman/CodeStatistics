@@ -293,7 +293,7 @@ void CodeStatisticsWindow::on_actionSourceCode_triggered()
 
 void CodeStatisticsWindow::on_actionInstallation_triggered()
 {
-#define INSTALLATION_PACKAGE_ADDR   ( "http://pan.baidu.com" )
+#define INSTALLATION_PACKAGE_ADDR   ( "http://pan.baidu.com/s/1mi0HvNa" )
 
     int iRet;
 

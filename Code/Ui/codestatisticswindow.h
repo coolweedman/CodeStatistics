@@ -15,6 +15,7 @@
 #include <QMainWindow>
 #include "codestatistics.h"
 
+
 namespace Ui {
 class CodeStatisticsWindow;
 }
@@ -27,6 +28,7 @@ class QTime;
 class QLabel;
 class QProgressBar;
 class FileFilterWindow;
+class CAppLanguage;
 
 
 /**********************************************************************************************************
@@ -62,6 +64,12 @@ private slots:
     void on_actionExit_triggered();
     void on_actionAbout_triggered();
     void on_actionFilter_triggered();
+    void on_actionSourceCode_triggered();
+    void on_actionInstallation_triggered();
+
+    void on_actionEnglish_triggered();
+
+    void on_actionChinese_triggered();
 
 private:
     Ui::CodeStatisticsWindow   *ui;

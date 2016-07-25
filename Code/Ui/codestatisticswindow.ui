@@ -21,7 +21,7 @@
     <item row="0" column="1">
      <widget class="QPushButton" name="pushButtonLookFor">
       <property name="text">
-       <string>浏览...</string>
+       <string>Browse...</string>
       </property>
      </widget>
     </item>
@@ -34,29 +34,32 @@
     </item>
     <item row="1" column="0" colspan="3">
      <widget class="QTableWidget" name="tableWidget">
+      <attribute name="horizontalHeaderDefaultSectionSize">
+       <number>115</number>
+      </attribute>
       <column>
        <property name="text">
-        <string>文件</string>
+        <string>File</string>
        </property>
       </column>
       <column>
        <property name="text">
-        <string>有效代码行</string>
+        <string>Valid Code Line(s)</string>
        </property>
       </column>
       <column>
        <property name="text">
-        <string>注释行</string>
+        <string>Comment Line(s)</string>
        </property>
       </column>
       <column>
        <property name="text">
-        <string>空行</string>
+        <string>Empty Line(s)</string>
        </property>
       </column>
       <column>
        <property name="text">
-        <string>总行数</string>
+        <string>Total Line(s)</string>
        </property>
       </column>
      </widget>
@@ -83,12 +86,22 @@
      <string>Help</string>
     </property>
     <addaction name="actionAbout"/>
+    <addaction name="actionSourceCode"/>
+    <addaction name="actionInstallation"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
      <string>View</string>
     </property>
+    <widget class="QMenu" name="menuLanguage">
+     <property name="title">
+      <string>Language</string>
+     </property>
+     <addaction name="actionEnglish"/>
+     <addaction name="actionChinese"/>
+    </widget>
     <addaction name="actionFilter"/>
+    <addaction name="menuLanguage"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuView"/>
@@ -108,6 +121,26 @@
   <action name="actionFilter">
    <property name="text">
     <string>Filter</string>
+   </property>
+  </action>
+  <action name="actionSourceCode">
+   <property name="text">
+    <string>SourceCode</string>
+   </property>
+  </action>
+  <action name="actionEnglish">
+   <property name="text">
+    <string>English</string>
+   </property>
+  </action>
+  <action name="actionChinese">
+   <property name="text">
+    <string>Chinese</string>
+   </property>
+  </action>
+  <action name="actionInstallation">
+   <property name="text">
+    <string>Installation Package</string>
    </property>
   </action>
  </widget>

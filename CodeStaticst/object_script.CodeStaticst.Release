@@ -7,9 +7,11 @@ INPUT(
 ./release\filefilterwindow.o
 ./release\filecodestatthread.o
 ./release\cpuinfo.o
+./release\qpplanguage.o
 ./release\moc_dirscanstatistics.o
 ./release\moc_codestatistics.o
 ./release\moc_codestatisticswindow.o
 ./release\moc_filefilterwindow.o
 ./release\moc_filecodestatthread.o
+./release\moc_applanguage.o
 );

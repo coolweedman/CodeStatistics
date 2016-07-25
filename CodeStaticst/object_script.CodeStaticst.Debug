@@ -7,9 +7,11 @@ INPUT(
 ./debug\filefilterwindow.o
 ./debug\filecodestatthread.o
 ./debug\cpuinfo.o
+./debug\qpplanguage.o
 ./debug\moc_dirscanstatistics.o
 ./debug\moc_codestatistics.o
 ./debug\moc_codestatisticswindow.o
 ./debug\moc_filefilterwindow.o
 ./debug\moc_filecodestatthread.o
+./debug\moc_applanguage.o
 );

@@ -11,6 +11,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = CodeStaticst
 TEMPLATE = app
 
+TRANSLATIONS = CodeStatistics.ts
+
 RC_FILE += ../Resource/icon.rc
 
 SOURCES += main.cpp\
@@ -20,7 +22,8 @@ SOURCES += main.cpp\
     ../Code/Ui/codestatisticswindow.cpp \
     ../Code/Ui/filefilterwindow.cpp \
     ../Code/Thread/filecodestatthread.cpp \
-    ../Code/Thread/cpuinfo.cpp
+    ../Code/Thread/cpuinfo.cpp \
+    ../Code/App/qpplanguage.cpp
 
 HEADERS  += \
     ../Code/Comm/typedefs.h \
@@ -30,7 +33,8 @@ HEADERS  += \
     ../Code/Ui/codestatisticswindow.h \
     ../Code/Ui/filefilterwindow.h \
     ../Code/Thread/filecodestatthread.h \
-    ../Code/Thread/cpuinfo.h
+    ../Code/Thread/cpuinfo.h \
+    ../Code/App/applanguage.h
 
 FORMS    += \
     ../Code/Ui/codestatisticswindow.ui \

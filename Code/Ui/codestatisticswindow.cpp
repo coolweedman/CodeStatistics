@@ -20,21 +20,15 @@
 #include <QTime>
 #include <QDebug>
 #include <QMessageBox>
+#include <QClipboard>
+#include "applanguage.h"
+
 
 /**********************************************************************************************************
   宏定义
 **********************************************************************************************************/
 
-#define CODE_STAT_VERSION           ( 103 )
-
-
-const static QString GstrTableWidgetTitle[] = {
-    "文件",
-    "有效代码行",
-    "注释行",
-    "空行",
-    "总行数",
-};
+#define CODE_STAT_VERSION           ( 104 )
 
 
 
@@ -52,7 +46,7 @@ CodeStatisticsWindow::CodeStatisticsWindow(QWidget *parent) :
 
     statusBarInit();
 
-    this->setWindowTitle( "Code Statistics V" + QString::number( CODE_STAT_VERSION/100.0, 'f', 2 ) );
+    this->setWindowTitle( tr("Code Statistics V") + QString::number( CODE_STAT_VERSION/100.0, 'f', 2 ) );
 
     mphFileFilterWindow = new FileFilterWindow(this);
     mphCodeStat = new CCodeStatistics();
@@ -97,12 +91,12 @@ void CodeStatisticsWindow::statusBarInit(void)
     mpLabelTotalFiles  = new QLabel();
     mpLabelTotalTime   = new QLabel();
 
-    mpLabelEffeLine->setText( "Effe: ?" );
-    mpLabelCommentLine->setText( "Comment: ?" );
-    mpLabelEmptyLine->setText( "Empty: ?" );
-    mpLabelTotalLine->setText( "Total: ?" );
-    mpLabelTotalFiles->setText( "File(s): ?" );
-    mpLabelTotalTime->setText( "Time(s): ?" );
+    mpLabelEffeLine->setText( tr("Effe: ?") );
+    mpLabelCommentLine->setText( tr("Comment: ?") );
+    mpLabelEmptyLine->setText( tr("Empty: ?") );
+    mpLabelTotalLine->setText( tr("Total: ?") );
+    mpLabelTotalFiles->setText( tr("File(s): ?") );
+    mpLabelTotalTime->setText( tr("Time(s): ?") );
 
     statusBar()->addWidget( mpLabelEffeLine );
     statusBar()->addWidget( mpLabelCommentLine );
@@ -126,11 +120,11 @@ void CodeStatisticsWindow::statusBarInit(void)
  */
 void CodeStatisticsWindow::codeStatStatusBarUpdate(void)
 {
-    mpLabelEffeLine->setText( " Effe: " + QString::number(msCodeStatResult.uiEffeCodeLines) );
-    mpLabelCommentLine->setText( " Comment: " + QString::number(msCodeStatResult.uiCommentCodeLines) );
-    mpLabelEmptyLine->setText( " Empty: " + QString::number(msCodeStatResult.uiEmptyLineNum) );
-    mpLabelTotalLine->setText( " Total: " + QString::number(msCodeStatResult.uiTotalLineNum) );
-    mpLabelTotalFiles->setText( " File(s): " + QString::number(msVecCodeStatDetailResult.length()) );
+    mpLabelEffeLine->setText( tr(" Effe: ") + QString::number(msCodeStatResult.uiEffeCodeLines) );
+    mpLabelCommentLine->setText( tr(" Comment: ") + QString::number(msCodeStatResult.uiCommentCodeLines) );
+    mpLabelEmptyLine->setText( tr(" Empty: ") + QString::number(msCodeStatResult.uiEmptyLineNum) );
+    mpLabelTotalLine->setText( tr(" Total: ") + QString::number(msCodeStatResult.uiTotalLineNum) );
+    mpLabelTotalFiles->setText( tr(" File(s): ") + QString::number(msVecCodeStatDetailResult.length()) );
 }
 
 
@@ -143,21 +137,36 @@ void CodeStatisticsWindow::codeStatStatusBarUpdate(void)
 void CodeStatisticsWindow::codeStatTableWidgetUpdate(void)
 {
     ui->tableWidget->clear();
+    ui->tableWidget->setSortingEnabled( true );
 
     QStringList strTitle;
 
-    for ( size_t i=0; i<sizeof(GstrTableWidgetTitle)/sizeof(GstrTableWidgetTitle[0]); i++ ) {
-        strTitle<<GstrTableWidgetTitle[i];
-    }
+    strTitle<<tr("File");
+    strTitle<<tr("Valid Code Line(s)");
+    strTitle<<tr("Comment Line(s)");
+    strTitle<<tr("Empty Line(s)");
+    strTitle<<tr("Total Line(s)");
     ui->tableWidget->setHorizontalHeaderLabels( strTitle );
 
     ui->tableWidget->setRowCount( msVecCodeStatDetailResult.length() );
+
     for ( int i=0; i<msVecCodeStatDetailResult.length(); i++ ) {
-        ui->tableWidget->setItem( i, 0, new QTableWidgetItem( msVecCodeStatDetailResult.at(i).first) );
-        ui->tableWidget->setItem( i, 1, new QTableWidgetItem( QString::number(msVecCodeStatDetailResult.at(i).second.uiEffeCodeLines) ) );
-        ui->tableWidget->setItem( i, 2, new QTableWidgetItem( QString::number(msVecCodeStatDetailResult.at(i).second.uiCommentCodeLines) ) );
-        ui->tableWidget->setItem( i, 3, new QTableWidgetItem( QString::number(msVecCodeStatDetailResult.at(i).second.uiEmptyLineNum) ) );
-        ui->tableWidget->setItem( i, 4, new QTableWidgetItem( QString::number(msVecCodeStatDetailResult.at(i).second.uiTotalLineNum) ) );
+        QVector<QTableWidgetItem *> vecItem;
+
+        for ( int j=0; j<ui->tableWidget->columnCount(); j++) {
+            vecItem.push_back( new QTableWidgetItem() );
+        }
+
+        int iColumnCnt = 0;
+        vecItem[iColumnCnt++]->setText( msVecCodeStatDetailResult.at(i).first );
+        vecItem[iColumnCnt++]->setData( Qt::DisplayRole, msVecCodeStatDetailResult.at(i).second.uiEffeCodeLines );
+        vecItem[iColumnCnt++]->setData( Qt::DisplayRole, msVecCodeStatDetailResult.at(i).second.uiCommentCodeLines );
+        vecItem[iColumnCnt++]->setData( Qt::DisplayRole, msVecCodeStatDetailResult.at(i).second.uiEmptyLineNum );
+        vecItem[iColumnCnt++]->setData( Qt::DisplayRole, msVecCodeStatDetailResult.at(i).second.uiTotalLineNum );
+
+        for ( int j=0; j<iColumnCnt; j++) {
+            ui->tableWidget->setItem( i, j, vecItem.at(j) );
+        }
     }
 }
 
@@ -186,7 +195,7 @@ void CodeStatisticsWindow::codeStatProgressUpdate(uint32_t ulCur, uint32_t ulTot
  */
 void CodeStatisticsWindow::codeStatProgressDone(bool bStat)
 {
-    mpLabelTotalTime->setText( "Time(s): " + QString::number( mphTime->elapsed()/1000.0, 'f', 3) );
+    mpLabelTotalTime->setText( tr("Time(s): ") + QString::number( mphTime->elapsed()/1000.0, 'f', 3) );
     delete mphTime;
 
     mpProgressBar->setVisible( false );
@@ -202,7 +211,7 @@ void CodeStatisticsWindow::codeStatProgressDone(bool bStat)
     ui->pushButtonOk->setEnabled( true );
 
     if ( !bStat ) {
-        QMessageBox::information( NULL, "代码扫描", "扫描目录失败", QMessageBox::Cancel );
+        QMessageBox::information( NULL, tr("Scan"), tr("Directory read fail"), QMessageBox::Cancel );
     }
 }
 
@@ -267,6 +276,45 @@ void CodeStatisticsWindow::on_actionFilter_triggered()
     mphFileFilterWindow->show();
 }
 
-/**********************************************************************************************************
-  END FILE
-**********************************************************************************************************/
+
+void CodeStatisticsWindow::on_actionSourceCode_triggered()
+{
+#define SOURCE_CODE_GITHUB_ADDR     ("git@github.com:coolweedman/CodeStatistics")
+
+    int iRet;
+
+    iRet = QMessageBox::information( this, tr("Copy GitHub Address"), SOURCE_CODE_GITHUB_ADDR, QMessageBox::Yes | QMessageBox::Cancel );
+
+    if ( QMessageBox::Yes == iRet ) {
+        QClipboard *pClipBoard = QApplication::clipboard();
+        pClipBoard->setText( SOURCE_CODE_GITHUB_ADDR );
+    }
+}
+
+void CodeStatisticsWindow::on_actionInstallation_triggered()
+{
+#define INSTALLATION_PACKAGE_ADDR   ( "http://pan.baidu.com" )
+
+    int iRet;
+
+    iRet = QMessageBox::information( this, tr("Copy Address"), INSTALLATION_PACKAGE_ADDR, QMessageBox::Yes | QMessageBox::Cancel );
+
+    if ( QMessageBox::Yes == iRet ) {
+        QClipboard *pClipBoard = QApplication::clipboard();
+        pClipBoard->setText( INSTALLATION_PACKAGE_ADDR );
+    }
+}
+
+void CodeStatisticsWindow::on_actionEnglish_triggered()
+{
+    CAppLanguage hLanguage;
+    hLanguage.appLanguageSet( LANGUAGE_ENGLISH );
+    QMessageBox::information( this, tr("Language Setting"), tr("Restart effect") );
+}
+
+void CodeStatisticsWindow::on_actionChinese_triggered()
+{
+    CAppLanguage hLanguage;
+    hLanguage.appLanguageSet( LANGUAGE_CHINESE );
+    QMessageBox::information( this, tr("Language Setting"), tr("Restart effect") );
+}
